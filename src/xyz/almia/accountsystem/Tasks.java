@@ -162,27 +162,29 @@ public class Tasks{
         	
         }, 0, 1);
 	}
+	
+	public void startCharacterRegen(Player player){
+		Account account = new Account(player);
+		if(account.getStatus().equals(AccountStatus.LOGGEDIN)){
+			Character character = account.getLoadedCharacter();
+			int regenrate = 6; //(int)(10 - (0.2 * account.getStat(Stats.HITPOINTS)));
+			if(regenrate < 1){
+				regenrate = 1;
+			}
+			new BukkitRunnable(){
+				@Override
+				public void run() {
+					if(character.getRegening()){
+						character.setHealth((int) (character.getHealth() + (character.getHealth() * .2)));//(int) (account.getHealth() + (1 + (account.getStat(Stats.HITPOINTS) * .2) ) ) );	
+					}
+				}
+			}.runTaskTimer(plugin, 0, (int)(regenrate  * 20));
+		}
+	}
 
 	public void runTasks(){
 		addSlotsToItem();
 		Selection.promoteToKing();
-		for(Player player : Bukkit.getOnlinePlayers()){
-			Account account = new Account(player);
-			if(account.getStatus().equals(AccountStatus.LOGGEDIN)){
-				Character character = account.getLoadedCharacter();
-				int regenrate = 6; //(int)(10 - (0.2 * account.getStat(Stats.HITPOINTS)));
-				if(regenrate < 1){
-					regenrate = 1;
-				}
-				new BukkitRunnable(){
-					@Override
-					public void run() {
-						character.setHealth((int) (character.getHealth() + (character.getHealth() * .2)));//(int) (account.getHealth() + (1 + (account.getStat(Stats.HITPOINTS) * .2) ) ) );
-					}
-				}.runTaskTimer(plugin, 0, (int)(regenrate  * 20));
-			}
-		}
-		
 		new BukkitRunnable(){
 			@Override
 			public void run() {
@@ -191,7 +193,18 @@ public class Tasks{
 					Account account = new Account(player);
 					
 					if(account.getStatus().equals(AccountStatus.LOGGEDIN)){
+						
+						
 						Character character = account.getLoadedCharacter();
+						
+						if(!(character.getRegening())){
+							startCharacterRegen(player);
+							character.setRegening(true);
+						}
+						
+						if(character.getCharacterStatus().equals(CharacterStatus.CHOOSE_USERNAME)){
+							PlayerSetup.sendNameSelectionProcess(player);
+						}
 						
 						player.setDisplayName(character.getUsername());
 						player.setCustomName(character.getUsername());

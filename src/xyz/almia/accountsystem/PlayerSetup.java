@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.almia.cardinalsystem.Cardinal;
@@ -71,19 +72,26 @@ public class PlayerSetup implements Listener{
 		Account account = new Account(player);
 		if(event.getInventory().getName().contains(player.getName())){
 			if(event.getCurrentItem() != null){
+				event.setCancelled(true);
 				
 				if(event.getCurrentItem().hasItemMeta()){
 					
 					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Character Slot 1")){
 						account.loadCharacter(0);
+						player.closeInventory();
+						player.teleport(account.getLoadedCharacter().getLastLocation());
 					}
 					
 					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Character Slot 2")){
 						account.loadCharacter(1);
+						player.closeInventory();
+						player.teleport(account.getLoadedCharacter().getLastLocation());
 					}
 					
 					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Character Slot 3")){
 						account.loadCharacter(2);
+						player.closeInventory();
+						player.teleport(account.getLoadedCharacter().getLastLocation());
 					}
 					
 				}
@@ -121,7 +129,7 @@ public class PlayerSetup implements Listener{
 	}
 	
 	
-	public void sendNameSelectionProcess(Player player){
+	public static void sendNameSelectionProcess(Player player){
 		for(int i=0; i < 50;){
 			player.sendMessage("");
 			i++;
@@ -130,6 +138,14 @@ public class PlayerSetup implements Listener{
 		Message.sendCenteredMessage(player, ChatColor.BOLD + "Please type what you would like to name your character into chat!");
 		Message.sendCenteredMessage(player, ChatColor.YELLOW+ "No profanity, No spaces, or the use of 'king' or 'damocles' in your name.");
 		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+	}
+	
+	@EventHandler
+	public void onLogout(PlayerQuitEvent event){
+		if(new Account(event.getPlayer()).getStatus().equals(AccountStatus.LOGGEDIN)){
+			new Account(event.getPlayer()).getLoadedCharacter().setLastLocation(event.getPlayer().getLocation());
+			new Account(event.getPlayer()).logout();
+		}
 	}
 	
 	@EventHandler
@@ -205,7 +221,7 @@ public class PlayerSetup implements Listener{
 			
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			Message.sendCenteredMessage(player, ChatColor.BOLD + "Welcome " + player.getName() + "!");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Please create a character.");
+			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Please choose a character.");
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			
 			new BukkitRunnable(){

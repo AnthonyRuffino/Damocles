@@ -34,7 +34,7 @@ public class AccountMenu {
 		
 		if(characterOne.exists()){
 			charOne = MenuItem.createBetterItem("Character Slot 1", Arrays.asList(new String[] {
-					ChatColor.GRAY + "Username: " + player.getName(),
+					ChatColor.GRAY + "Username: " + characterOne.getUsername(),
 					ChatColor.GRAY + "Rank: " + characterOne.getRank().toString(),
 					"",
 					ChatColor.GRAY + "Level: " + characterOne.getLevel(),
@@ -76,7 +76,7 @@ public class AccountMenu {
 		
 		if(characterTwo.exists()){
 			charTwo = MenuItem.createBetterItem("Character Slot 2", Arrays.asList(new String[] {
-					ChatColor.GRAY + "Username: " + player.getName(),
+					ChatColor.GRAY + "Username: " + characterTwo.getUsername(),
 					ChatColor.GRAY + "Rank: " + characterTwo.getRank().toString(),
 					"",
 					ChatColor.GRAY + "Level: " + characterTwo.getLevel(),
@@ -118,7 +118,7 @@ public class AccountMenu {
 		
 		if(characterThree.exists()){
 			charThree = MenuItem.createBetterItem("Character Slot 3", Arrays.asList(new String[] {
-					ChatColor.GRAY + "Username: " + player.getName(),
+					ChatColor.GRAY + "Username: " + characterThree.getUsername(),
 					ChatColor.GRAY + "Rank: " + characterThree.getRank().toString(),
 					"",
 					ChatColor.GRAY + "Level: " + characterThree.getLevel(),

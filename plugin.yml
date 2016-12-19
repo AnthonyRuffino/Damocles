@@ -20,6 +20,8 @@ commands:
     description: command help.
   chest:
     description: command help.
+  logout:
+    description: Logs the user out of the character he is currently using.
   rune:
     description: Use command for help options.
     aliases: [runes, enchant, enchants]

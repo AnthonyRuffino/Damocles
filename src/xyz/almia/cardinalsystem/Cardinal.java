@@ -293,8 +293,12 @@ public class Cardinal extends JavaPlugin implements Listener{
 		Clans whatClan = character.getClan();
 		Clan clan = new Clan(whatClan);
 		
+		if(cmd.getName().equalsIgnoreCase("logout")){
+			account.getLoadedCharacter().setLastLocation(player.getLocation());
+			account.logout();
+		}
+		
 		if(cmd.getName().equalsIgnoreCase("help")){
-			player.getInventory().addItem(ItemSerializer.deserializeItem(Items.EXCALIBUR));
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
 			Message.sendCenteredMessage(player, " ");
@@ -330,9 +334,11 @@ public class Cardinal extends JavaPlugin implements Listener{
 			
 			Inventory inv = Bukkit.createInventory(null, 9, "items");
 			
-			for(Items item : Items.values()){
-				inv.addItem(ItemSerializer.deserializeItem(item));
-			}
+			inv.addItem(ItemSerializer.deserializeItem(Items.EXCALIBUR));
+			inv.addItem(ItemSerializer.deserializeItem(Items.BAT));
+			inv.addItem(ItemSerializer.deserializeItem(Items.KENDO_SWORD));
+			inv.addItem(ItemSerializer.deserializeItem(Items.MURAMASA));
+			inv.addItem(ItemSerializer.deserializeItem(Items.RORAN));
 			inv.addItem(new Potion(new ItemStack(Material.POTION)).create(PotionTypes.HEALING, 1));
 			inv.addItem(new Potion(new ItemStack(Material.POTION)).create(PotionTypes.MANA, 1));
 			

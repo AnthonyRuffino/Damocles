@@ -1,5 +1,6 @@
 package xyz.almia.accountsystem;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -8,6 +9,7 @@ import xyz.almia.clansystem.Clan;
 import xyz.almia.clansystem.Clans;
 import xyz.almia.messagesystem.Messages;
 import xyz.almia.utils.ConfigManager;
+import xyz.almia.utils.LocationSerializer;
 
 public class Character {
 	
@@ -23,12 +25,30 @@ public class Character {
 		this.config = ConfigManager.get(player.getUniqueId()+";char;"+characterID+".yml");
 	}
 	
+	public Location getLastLocation(){
+		return LocationSerializer.locationFromString(config.getString("location"));
+	}
+	
+	public void setLastLocation(Location loc){
+		config.set("location", LocationSerializer.locationToString(loc));
+		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
+	}
+	
 	public int getPLevel(Profession prof){
 		return config.getInt("profession."+prof.toString().toLowerCase()+".level");
 	}
 	
 	public void setPLevel(Profession prof, int level){
 		config.set("profession."+prof.toString().toLowerCase()+".level", level);
+		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
+	}
+	
+	public boolean getRegening(){
+		return config.getBoolean("regening");
+	}
+	
+	public void setRegening(boolean state){
+		config.set("regening", state);
 		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
 	}
 	
@@ -350,6 +370,7 @@ public class Character {
 		config.set("ap", 4);
 		config.set("health", 6);
 		config.set("maxhealth", 6);
+		config.set("regening", false);
 		config.set("profession.herbalism.level", 1);
 		config.set("profession.herbalism.exp", 0);
 		config.set("profession.cooking.level", 1);
@@ -366,6 +387,7 @@ public class Character {
 		config.set("stats.hitpoints", 0);
 		config.set("stats.agility", 0);
 		config.set("stats.intelligence", 0);
+		config.set("location", LocationSerializer.locationToString(player.getLocation()));
 		config.set("status", CharacterStatus.CHOOSE_USERNAME.toString());
 		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
 		ConfigManager.load("players.yml");

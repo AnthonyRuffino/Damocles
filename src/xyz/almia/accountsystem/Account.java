@@ -22,6 +22,13 @@ public class Account {
 		return AccountStatus.valueOf(config.getString("status"));
 	}
 	
+	public void logout(){
+		config.set("status", AccountStatus.LOGGINGIN.toString());
+		config.set("lastLoaded", getLoadedCharacterID());
+		config.set("loaded", -1);
+		ConfigManager.save(player.getUniqueId()+";acc.yml");
+	}
+	
 	public Character loadCharacter(int ID){
 		if(ID == -1){
 			return null;
