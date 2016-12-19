@@ -232,6 +232,8 @@ public class Cardinal extends JavaPlugin implements Listener{
 		getConfig().addDefault("enchant.volley", 1);
 		getConfig().addDefault("enchant.wild_mark", 5);
 		
+		getConfig().addDefault("players", new ArrayList<String>());
+		
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}
@@ -376,9 +378,9 @@ public class Cardinal extends JavaPlugin implements Listener{
 			if(args[0].equalsIgnoreCase("set")){
 				if(args.length == 3){
 					try{
-						Player target = Bukkit.getPlayer(args[1]);
+						xyz.almia.accountsystem.Character chara = PlayerSetup.getCharacterFromUsername(args[1]);
 						xyz.almia.accountsystem.Rank rank = xyz.almia.accountsystem.Rank.valueOf(args[2].toUpperCase());
-						new Account(target).getLoadedCharacter().setRank(rank);
+						chara.setRank(rank);
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Rank");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have set "+args[1]+" to a "+args[2]+"!");
@@ -486,20 +488,20 @@ public class Cardinal extends JavaPlugin implements Listener{
 		      if(args[0].equalsIgnoreCase("leave")){
 		    	  if(character.isInClan()){
 		    		  
-		    		  if(clan.getProposed().equalsIgnoreCase(player.getUniqueId()+""))
-		    			  clan.setProposed("unknown");
+		    		  if(clan.getProposed().getUsername().equalsIgnoreCase(character.getUsername()))
+		    			  clan.setProposed(null);
 		    		  
 		    		  xyz.almia.clansystem.Rank rank = character.getClanRank();
 		    		  switch(rank){
 					case CLANSMEN:
-						clan.removeClansmen(player.getUniqueId()+"");
+						clan.removeClansmen(character);
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Clan Info");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have left "+whatClan.toString()+" Clan!");
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 		    			return true;
 					case KING:
-						clan.setKing("unknown");
+						clan.setKing(null);
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Clan Info");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have left "+whatClan.toString()+" Clan!");
@@ -602,21 +604,21 @@ public class Cardinal extends JavaPlugin implements Listener{
 		    	  if(whatClan.equals(Clans.EXILED))
 		    		  return true;
 		    	  
-		    	  if(clan.getProposed().equalsIgnoreCase(player.getUniqueId()+"")){
-		    		  if(clan.getKing().equalsIgnoreCase("unknown")){
-		    			  clan.removeClansmen(player.getUniqueId()+"");
-		    			  clan.setProposed("unknown");
-		    			  clan.setKing(player.getUniqueId()+"");
+		    	  if(clan.getProposed().getUsername().equalsIgnoreCase(character.getUsername())){
+		    		  if(clan.getKing() == null){
+		    			  clan.removeClansmen(character);
+		    			  clan.setProposed(null);
+		    			  clan.setKing(character);
 		    			  for(Player target : Bukkit.getOnlinePlayers()){
 								if(whatClan.equals(Clans.COLORLESS)){
 									Message.sendCenteredMessage(target, ChatColor.GREEN+"----------------------------------------------------");
 									Message.sendCenteredMessage(target, ChatColor.BOLD + "Game Info");
-									Message.sendCenteredMessage(target, ChatColor.YELLOW+player.getName()+" has become the " + ChatColor.DARK_GRAY + whatClan.toString().toLowerCase().substring(0, 1).toUpperCase() + whatClan.toString().toLowerCase().substring(1) + ChatColor.YELLOW + " King!");
+									Message.sendCenteredMessage(target, ChatColor.YELLOW+character.getUsername()+" has become the " + ChatColor.DARK_GRAY + whatClan.toString().toLowerCase().substring(0, 1).toUpperCase() + whatClan.toString().toLowerCase().substring(1) + ChatColor.YELLOW + " King!");
 									Message.sendCenteredMessage(target, ChatColor.GREEN+"----------------------------------------------------");
 								}else{
 									Message.sendCenteredMessage(target, ChatColor.GREEN+"----------------------------------------------------");
 									Message.sendCenteredMessage(target, ChatColor.BOLD + "Game Info");
-									Message.sendCenteredMessage(target, ChatColor.YELLOW+player.getName()+" has become the " + ChatColor.valueOf(whatClan.toString().toUpperCase()) + whatClan.toString().toLowerCase().substring(0, 1).toUpperCase() + whatClan.toString().toLowerCase().substring(1) + ChatColor.YELLOW + " King!");
+									Message.sendCenteredMessage(target, ChatColor.YELLOW+character.getUsername()+" has become the " + ChatColor.valueOf(whatClan.toString().toUpperCase()) + whatClan.toString().toLowerCase().substring(0, 1).toUpperCase() + whatClan.toString().toLowerCase().substring(1) + ChatColor.YELLOW + " King!");
 									Message.sendCenteredMessage(target, ChatColor.GREEN+"----------------------------------------------------");
 								}
 							}
@@ -634,9 +636,9 @@ public class Cardinal extends JavaPlugin implements Listener{
 		    	  if(whatClan.equals(Clans.EXILED))
 		    		  return true;
 		    	  
-		    	  if(clan.getProposed().equalsIgnoreCase(player.getUniqueId()+"")){
-		    		  if(clan.getKing().equalsIgnoreCase("unknown")){
-		    			  clan.addRejected(player.getUniqueId()+"");
+		    	  if(clan.getProposed().getUsername().equalsIgnoreCase(character.getUsername())){
+		    		  if(clan.getKing() == null){
+		    			  clan.addRejected(character);
 							if(whatClan.equals(Clans.COLORLESS)){
 								Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 								Message.sendCenteredMessage(player, ChatColor.BOLD + "Game Info");
@@ -724,7 +726,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 			    		  try{
 			    			  Clans clanchoice = Clans.valueOf(args[1].toUpperCase());
 			    			  Clan theClan = new Clan(clanchoice);
-			    			  theClan.addClansmen(player.getUniqueId()+"");
+			    			  theClan.addClansmen(character);
 	    						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 	    						Message.sendCenteredMessage(player, ChatColor.BOLD + "Clan Info");
 	    						Message.sendCenteredMessage(player, ChatColor.YELLOW+"INFO: You have joined the "+args[1]+" Clan!");

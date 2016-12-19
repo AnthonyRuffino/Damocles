@@ -251,27 +251,6 @@ public class Tasks{
 
 	}
 	
-	/*
-	
-	public static void regenLife(Player player){
-		Account account = new Account(player);
-		
-		int regenrate = (int)(10 - (0.2 * account.getStat(Stats.HITPOINTS)));
-		if(regenrate < 1){
-			regenrate = 1;
-		}
-		
-		new BukkitRunnable(){
-			@Override
-			public void run() {
-				account.setPlayerHealth((int) (account.getHealth() + (1 + (account.getStat(Stats.HITPOINTS) * .2) ) ) );
-				regenLife(player);
-				cancel();
-			}
-		}.runTaskTimer(plugin, 0, (int)(regenrate * 20));
-	}
-	*/
-	
 	public static String getName(Entity entity){
 		switch(entity.getType()){
 		case AREA_EFFECT_CLOUD:

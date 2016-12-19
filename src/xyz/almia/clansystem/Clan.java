@@ -1,7 +1,10 @@
 package xyz.almia.clansystem;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.plugin.Plugin;
+
+import xyz.almia.accountsystem.PlayerSetup;
 import xyz.almia.cardinalsystem.Cardinal;
 
 public class Clan {
@@ -13,47 +16,62 @@ public class Clan {
 		this.clan = clan;
 	}
 	
-	public List<String> getClansmen(){
-		return plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".clansmen");
+	public List<xyz.almia.accountsystem.Character> getClansmen(){
+		List<xyz.almia.accountsystem.Character> characters = new ArrayList<xyz.almia.accountsystem.Character>();
+		for(String name : plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".clansmen")){
+			characters.add(PlayerSetup.getCharacterFromUsername(name));
+		}
+		return characters;
 	}
 	
-	public void addClansmen(String username){
+	public void addClansmen(xyz.almia.accountsystem.Character chara){
 		List<String> clansmen = plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".clansmen");
-		clansmen.add(username);
+		clansmen.add(chara.getUsername());
 		plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".clansmen", clansmen);
 		plugin.saveConfig();
 	}
 	
-	public void removeClansmen(String uuid){
+	public void removeClansmen(xyz.almia.accountsystem.Character chara){
 		List<String> clansmen = plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".clansmen");
-		clansmen.remove(uuid);
+		clansmen.remove(chara.getUsername());
 		plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".clansmen", clansmen);
 		plugin.saveConfig();
 	}
 	
-	public String getKing(){
+	public xyz.almia.accountsystem.Character getKing(){
 		if(clan.equals(Clans.EXILED))
 			return null;
 		if(clan.equals(Clans.UNCLANNED))
 			return null;
-		return plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".king");
+		try{
+			return PlayerSetup.getCharacterFromUsername(plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".king"));
+		}catch(Exception e){
+			return null;
+		}
 	}
 	
 	public String getKingName(){
-		String name = plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".king");
-		return name;
+		return plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".king");
 	}
 	
-	public void setKing(String name){
+	public void setKing(xyz.almia.accountsystem.Character chara){
 		if(clan.equals(Clans.EXILED))
 			return;
 		if(clan.equals(Clans.UNCLANNED))
 			return;
-		plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".king", name);
+		
+		if(chara == null){
+			plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".king", "unknown");
+			plugin.saveConfig();
+			return;
+		}
+		
+		plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".king", chara.getUsername());
 		plugin.saveConfig();
+		return;
 	}
 	
-	public boolean isAKing(){
+	public boolean isThereAKing(){
 		if(plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".king").equalsIgnoreCase("unknown")){
 			return false;
 		}else{
@@ -61,46 +79,62 @@ public class Clan {
 		}
 	}
 	
-	public List<String> getRejected(){
+	public List<xyz.almia.accountsystem.Character> getRejected(){
 		if(clan.equals(Clans.EXILED))
 			return null;
 		if(clan.equals(Clans.UNCLANNED))
 			return null;
-		return plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".rejected");
+		
+		List<xyz.almia.accountsystem.Character> characters = new ArrayList<xyz.almia.accountsystem.Character>();
+		for(String name : plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".rejected")){
+			characters.add(PlayerSetup.getCharacterFromUsername(name));
+		}
+		return characters;
 	}
 	
-	public void addRejected(String name){
+	public void addRejected(xyz.almia.accountsystem.Character chara){
 		List<String> rejected = plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".rejected");
-		rejected.add(name);
+		rejected.add(chara.getUsername());
 		plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".rejected", rejected);
 		plugin.saveConfig();
 	}
 	
-	public void removeRejected(String name){
+	public void removeRejected(xyz.almia.accountsystem.Character chara){
 		List<String> rejected = plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".rejected");
-		rejected.remove(name);
+		rejected.remove(chara.getUsername());
 		plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".rejected", rejected);
 		plugin.saveConfig();
 	}
 	
-	public String getProposed(){
+	public xyz.almia.accountsystem.Character getProposed(){
 		if(clan.equals(Clans.EXILED))
 			return null;
 		if(clan.equals(Clans.UNCLANNED))
 			return null;
-		return plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".proposed");
+		try{
+			return PlayerSetup.getCharacterFromUsername(plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".proposed"));
+		}catch(Exception e){
+			return null;
+		}
 	}
 	
-	public void setProposed(String name){
+	public void setProposed(xyz.almia.accountsystem.Character chara){
 		if(clan.equals(Clans.EXILED))
 			return;
 		if(clan.equals(Clans.UNCLANNED))
 			return;
-		plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".proposed", name);
+		
+		if(chara == null){
+			plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".proposed", "unknown");
+			plugin.saveConfig();
+			return;
+		}
+		plugin.getConfig().set("Kings."+clan.toString().toLowerCase()+".proposed", chara.getUsername());
 		plugin.saveConfig();
+		return;
 	}
 	
-	public boolean isAProposed(){
+	public boolean isSomeoneProposed(){
 		if(plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".proposed").equalsIgnoreCase("unknown")){
 			return false;
 		}else{

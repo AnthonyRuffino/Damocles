@@ -3,7 +3,6 @@ package xyz.almia.menu;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,7 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-
 import xyz.almia.clansystem.Clan;
 import xyz.almia.clansystem.Clans;
 
@@ -64,9 +62,9 @@ public class ClanMenu implements Listener{
 		List<Inventory> pages = new ArrayList<Inventory>();
 		int page = 1;
 		pages.add(Bukkit.createInventory(null, 54, "Page "+page));
-		List<String> clansmen = clanProfile.getClansmen();
-		for(String members : clansmen){
-			Player player = Bukkit.getPlayer(UUID.fromString(members));
+		List<xyz.almia.accountsystem.Character> clansmen = clanProfile.getClansmen();
+		for(xyz.almia.accountsystem.Character members : clansmen){
+			Player player = members.getPlayer();
 		       ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)SkullType.PLAYER.ordinal());
 		        SkullMeta meta = (SkullMeta) skull.getItemMeta();
 		        meta.setOwner(player.getName());

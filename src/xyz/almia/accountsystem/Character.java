@@ -1,5 +1,8 @@
 package xyz.almia.accountsystem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,6 +26,10 @@ public class Character {
 		this.characterID = characterID;
 		ConfigManager.load(player.getUniqueId()+";char;"+characterID+".yml");
 		this.config = ConfigManager.get(player.getUniqueId()+";char;"+characterID+".yml");
+	}
+	
+	public Player getPlayer(){
+		return this.player;
 	}
 	
 	public Location getLastLocation(){
@@ -83,7 +90,7 @@ public class Character {
 		if(clan.equals(Clans.EXILED))
 			return xyz.almia.clansystem.Rank.CLANSMEN;
 		
-		if(clanProfile.getKing().equalsIgnoreCase(getUsername())){
+		if(clanProfile.getKing().getUsername().equalsIgnoreCase(getUsername())){
 			return xyz.almia.clansystem.Rank.KING;
 		}
 		
@@ -111,7 +118,7 @@ public class Character {
 				if(clanProfile.getClansmen().contains(getUsername())){
 					return clan;
 				}
-				if(clanProfile.getKing().contains(getUsername())){
+				if(clanProfile.getKing().getUsername().contains(getUsername())){
 					return clan;
 				}
 			}
@@ -390,9 +397,13 @@ public class Character {
 		config.set("location", LocationSerializer.locationToString(player.getLocation()));
 		config.set("status", CharacterStatus.CHOOSE_USERNAME.toString());
 		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
-		ConfigManager.load("players.yml");
-		ConfigManager.get("players.yml").getStringList("players").add(player.getUniqueId()+";acc;"+characterID);
-		ConfigManager.save("players.yml");
+		List<String> s = new ArrayList<String>();
+		if(plugin.getConfig().getStringList("players") != null){
+			s = plugin.getConfig().getStringList("players");
+		}
+		s.add(player.getUniqueId()+";char;"+characterID);
+		plugin.getConfig().set("players", s);
+		plugin.saveConfig();
 	}
 	
 }

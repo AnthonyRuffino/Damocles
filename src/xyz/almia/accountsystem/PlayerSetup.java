@@ -14,14 +14,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.menu.AccountMenu;
-import xyz.almia.utils.ConfigManager;
 import xyz.almia.utils.Message;
 import xyz.almia.utils.Swears;
 
 public class PlayerSetup implements Listener{
+	
+	public static Plugin getPlugin(){
+		return Cardinal.getPlugin();
+	}
 	
 	public static Character getCharacterFromUsername(String username){
 		if(username.equalsIgnoreCase("UNKNOWN"))
@@ -36,8 +40,7 @@ public class PlayerSetup implements Listener{
 	}
 	
 	public static List<Character> getCharacters(){
-		ConfigManager.load("players.yml");
-		List<String> serchars = ConfigManager.get("players.yml").getStringList("players");
+		List<String> serchars = getPlugin().getConfig().getStringList("players");
 		List<Character> chars = new ArrayList<Character>();
 		for(String s : serchars){
 			chars.add(deserializeCharacter(s));
@@ -45,7 +48,7 @@ public class PlayerSetup implements Listener{
 		return chars;
 	}
 	
-	public List<String> getCharacterNames(){
+	public static List<String> getCharacterNames(){
 		List<Character> chars = getCharacters();
 		List<String> names = new ArrayList<String>();
 		for(Character chara : chars){
@@ -88,7 +91,6 @@ public class PlayerSetup implements Listener{
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Logging in!");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Logged into "+account.getLoadedCharacter().getUsername()+"!");
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-						player.performCommand("stats");
 					}
 					
 					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Character Slot 2")){
@@ -103,7 +105,6 @@ public class PlayerSetup implements Listener{
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Logging in!");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Logged into "+account.getLoadedCharacter().getUsername()+"!");
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-						player.performCommand("stats");
 					}
 					
 					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Character Slot 3")){
@@ -118,7 +119,6 @@ public class PlayerSetup implements Listener{
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Logging in!");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Logged into "+account.getLoadedCharacter().getUsername()+"!");
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-						player.performCommand("stats");
 					}
 					
 				}
@@ -193,7 +193,7 @@ public class PlayerSetup implements Listener{
 					
 					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 					Message.sendCenteredMessage(player, ChatColor.BOLD + "Name available!");
-					Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Changing username now.");
+					Message.sendCenteredMessage(player, ChatColor.YELLOW+ "You have been logged in.");
 					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 					
 					fchar.setCharacterStatus(CharacterStatus.NORMAL);

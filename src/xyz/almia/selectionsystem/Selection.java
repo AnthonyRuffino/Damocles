@@ -22,8 +22,7 @@ public class Selection implements Listener{
 			public void run(){
 				
 				for(Player player : Bukkit.getServer().getOnlinePlayers()){
-					Account account = new Account(player);
-					
+					Account account = new Account(player);					
 					if(account.getStatus().equals(AccountStatus.LOGGEDIN)){
 						
 						if(account.getLoadedCharacter().getLevel() >= 5){
@@ -34,15 +33,17 @@ public class Selection implements Listener{
 								
 								Clan clanProfile = new Clan(clan);
 								
+								xyz.almia.accountsystem.Character character = account.getLoadedCharacter();
+								
 								if(!(clan.equals(Clans.EXILED))){
 								
-								if(!(clanProfile.isAKing())){
+								if(!(clanProfile.isThereAKing())){
 									
-									if(!(clanProfile.isAProposed())){
+									if(!(clanProfile.isSomeoneProposed())){
 										
-										if(!(clanProfile.getRejected().contains(player.getUniqueId()+""))){
+										if(!(clanProfile.getRejected().contains(character))){
 											
-											clanProfile.setProposed(player.getUniqueId()+"");
+											clanProfile.setProposed(character);
 											
 	        								if(clan.equals(Clans.COLORLESS)){
 	        									Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
