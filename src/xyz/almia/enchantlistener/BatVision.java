@@ -1,0 +1,55 @@
+package xyz.almia.enchantlistener;
+
+import java.util.HashMap;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
+import xyz.almia.cardinalsystem.Cardinal;
+import xyz.almia.itemsystem.Armor;
+import xyz.almia.itemsystem.EnchantTypes;
+import xyz.almia.itemsystem.Enchantments;
+import xyz.almia.itemsystem.ItemHandler;
+
+public class BatVision {
+	
+	public static void checkForBatEnchant(){
+		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(Cardinal.getPlugin(), new Runnable() {
+
+			@Override
+			public void run() {
+				
+				for(Player player : Bukkit.getOnlinePlayers()){
+					if(player.getInventory().getHelmet() != null){
+						ItemStack item = player.getInventory().getHelmet();
+						
+						if(ItemHandler.getEnchantType(item).equals(EnchantTypes.HELMET)){
+							Armor detailItem = new Armor(item);
+
+								if(detailItem.getEnchants() != null){
+									HashMap<Enchantments, Integer> enchantments = detailItem.getEnchantsAndLevel();
+									if(enchantments.containsKey(Enchantments.BAT_VISION)){
+										int amp = 0;
+										int level = enchantments.get(Enchantments.BAT_VISION);
+										if(level == 1){
+											amp = 0;
+										}
+										player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20, amp));
+									}
+								}
+
+						}
+						
+
+					}
+				}
+				
+			}
+        	
+        }, 0, 1);
+	}
+	
+}

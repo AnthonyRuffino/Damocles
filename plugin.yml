@@ -1,0 +1,25 @@
+name: SevenKings
+version: 3.8
+author: Kowagatte
+main: xyz.almia.cardinalsystem.Cardinal
+depend: [Vault]
+commands:
+  cardinal:
+    description: creates detailed items.
+  rank:
+    description: master rank command.
+  clan:
+    description: clan main command.
+  hat:
+    description: sets item in hand to helmet
+  stats:
+    description: player stats.
+  help:
+    description: command help.
+  serialize:
+    description: command help.
+  chest:
+    description: command help.
+  rune:
+    description: Use command for help options.
+    aliases: [runes, enchant, enchants]
