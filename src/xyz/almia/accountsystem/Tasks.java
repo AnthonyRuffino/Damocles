@@ -193,6 +193,11 @@ public class Tasks{
 					if(account.getStatus().equals(AccountStatus.LOGGEDIN)){
 						Character character = account.getLoadedCharacter();
 						
+						player.setDisplayName(character.getUsername());
+						player.setCustomName(character.getUsername());
+						player.setPlayerListName(character.getUsername());
+						player.setCustomNameVisible(true);
+						
 						double damage = (1 + (((double)(character.getStat(Stat.STRENGTH)) - 1) * (2 * (1/4) ) ) );
 						character.setPhysicalDamage((int)damage);
 						double mdamage = (1 + (((double)(character.getStat(Stat.INTELLIGENCE)) - 1) * (2 * (1/4) ) ) );

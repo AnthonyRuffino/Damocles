@@ -20,7 +20,7 @@ public class ChatSystem implements Listener{
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event){
 		
-		event.getPlayer().setDisplayName(new Account(event.getPlayer()).getLoadedCharacter().getTitle()+event.getPlayer().getName());
+		event.getPlayer().setDisplayName(new Account(event.getPlayer()).getLoadedCharacter().getTitle()+new Account(event.getPlayer()).getLoadedCharacter().getUsername());
 		
 		if(event.getMessage().contains("@hand")){
 			if(event.getPlayer().getInventory().getItemInMainHand() != null){

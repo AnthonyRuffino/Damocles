@@ -70,7 +70,6 @@ public class PlayerSetup implements Listener{
 		Player player = (Player) event.getWhoClicked();
 		Account account = new Account(player);
 		if(event.getInventory().getName().contains(player.getName())){
-			player.sendMessage("nrjnkrjkjenrkfer");
 			if(event.getCurrentItem() != null){
 				
 				if(event.getCurrentItem().hasItemMeta()){
