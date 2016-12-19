@@ -175,7 +175,7 @@ public class Tasks{
 				@Override
 				public void run() {
 					if(character.getRegening()){
-						character.setHealth((int) (character.getHealth() + (character.getHealth() * .2)));//(int) (account.getHealth() + (1 + (account.getStat(Stats.HITPOINTS) * .2) ) ) );	
+						character.setHealth((int) (character.getHealth() + 1));//(int) (account.getHealth() + (1 + (account.getStat(Stats.HITPOINTS) * .2) ) ) );	
 					}
 				}
 			}.runTaskTimer(plugin, 0, (int)(regenrate  * 20));

@@ -80,18 +80,45 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(0);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
+						for(int i=0; i < 50;){
+							player.sendMessage("");
+							i++;
+						}
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(player, ChatColor.BOLD + "Logging in!");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Logged into "+account.getLoadedCharacter().getUsername()+"!");
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						player.performCommand("stats");
 					}
 					
 					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Character Slot 2")){
 						account.loadCharacter(1);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
+						for(int i=0; i < 50;){
+							player.sendMessage("");
+							i++;
+						}
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(player, ChatColor.BOLD + "Logging in!");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Logged into "+account.getLoadedCharacter().getUsername()+"!");
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						player.performCommand("stats");
 					}
 					
 					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Character Slot 3")){
 						account.loadCharacter(2);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
+						for(int i=0; i < 50;){
+							player.sendMessage("");
+							i++;
+						}
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(player, ChatColor.BOLD + "Logging in!");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Logged into "+account.getLoadedCharacter().getUsername()+"!");
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						player.performCommand("stats");
 					}
 					
 				}

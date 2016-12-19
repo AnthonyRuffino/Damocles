@@ -23,6 +23,7 @@ public class Account {
 	}
 	
 	public void logout(){
+		getLoadedCharacter().setRegening(false);
 		config.set("status", AccountStatus.LOGGINGIN.toString());
 		config.set("lastLoaded", getLoadedCharacterID());
 		config.set("loaded", -1);

@@ -207,7 +207,6 @@ public class DamageSystem implements Listener{
 	public void onDamage(EntityDamageByEntityEvent event){
 		
 		if(event.getEntity() instanceof Creature){
-			Creature creature = (Creature) event.getEntity();
 			double damage = event.getDamage();
 			if(event.getDamager() instanceof Player){
 				Player attacker = (Player)event.getDamager();
@@ -278,12 +277,7 @@ public class DamageSystem implements Listener{
 				damage = new Account(attacker).getLoadedCharacter().getPhysicalDamage() + itemDamage;
 				
 			}
-			
-			int predealt = (int) creature.getHealth();
 			event.setDamage(damage);
-			int afterdealt = (int) (creature.getHealth() - event.getDamage());
-			
-			event.getDamager().sendMessage( afterdealt + "/" + predealt);
 			
 		}
 		
