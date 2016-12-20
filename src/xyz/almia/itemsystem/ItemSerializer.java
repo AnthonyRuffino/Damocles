@@ -36,7 +36,7 @@ public class ItemSerializer {
 			}catch(NullPointerException e){ }
 		}
 		
-		ritem.setup(enchantsAndLevel, file.getInt(item.toString()+".slots"), file.getInt(item.toString()+".int"), file.getInt(item.toString()+".str"), file.getInt(item.toString()+".hp"), file.getInt(item.toString()+".agi"), file.getInt(item.toString()+".damage"), file.getInt(item.toString()+".reforges"), file.getInt(item.toString()+".weight"), file.getInt(item.toString()+".upgrades"), file.getBoolean(item.toString()+".protected"), file.getStringList(item.toString()+".flavortext"));
+		ritem.setup(enchantsAndLevel, file.getInt(item.toString()+".slots"), file.getInt(item.toString()+".int"), file.getInt(item.toString()+".str"), file.getInt(item.toString()+".hp"), file.getInt(item.toString()+".agi"), file.getInt(item.toString()+".damage"), file.getInt(item.toString()+".reforges"), file.getInt(item.toString()+".weight"), file.getInt(item.toString()+".upgrades"), file.getBoolean(item.toString()+".protected"), file.getInt(item.toString()+".durability"), file.getInt(item.toString()+".maxdurability"), file.getStringList(item.toString()+".flavortext"));
 		
         net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(itemstack);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
@@ -70,6 +70,8 @@ public class ItemSerializer {
 		ConfigManager.get("items.yml").set(item.toString()+".upgrades", ritem.getUpgrades());
 		ConfigManager.get("items.yml").set(item.toString()+".reforges", ritem.getReforges());
 		ConfigManager.get("items.yml").set(item.toString()+".protected", ritem.isProtected());
+		ConfigManager.get("items.yml").set(item.toString()+".durability", ritem.getDurability());
+		ConfigManager.get("items.yml").set(item.toString()+".maxdurability", ritem.getMaxDurability());
 		ConfigManager.get("items.yml").set(item.toString()+".flavortext", ritem.getFlavorText());
 		ConfigManager.save("items.yml");
 	}

@@ -18,7 +18,7 @@ public class Weapon{
 		this.item = item;
 	}
 	
-	public void setup(HashMap<Enchantments, Integer> enchants, int slots, int intel, int str, int hp, int agi ,int damage, int reforges, int weight, int upgrades, boolean isprotected, List<String> flavortext){
+	public void setup(HashMap<Enchantments, Integer> enchants, int slots, int intel, int str, int hp, int agi ,int damage, int reforges, int weight, int upgrades, boolean isprotected, int durability, int maxdurability, List<String> flavortext){
 		
 		ItemMeta im = item.getItemMeta();
 		List<String> lore = new ArrayList<String>();
@@ -43,6 +43,7 @@ public class Weapon{
 		lore.add(ChatColor.DARK_GRAY+"Number of upgrades available: "+ upgrades);
 		lore.add(ChatColor.DARK_GRAY+"Number of reforges available: "+ reforges);
 		lore.add("");
+		lore.add(ChatColor.DARK_GRAY+"Durability: " + durability + "/" + maxdurability);
 		
 		if(isprotected){
 			lore.add(ChatColor.WHITE + "" + ChatColor.BOLD + "PROTECTED");
@@ -59,6 +60,60 @@ public class Weapon{
 		im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		item.setItemMeta(im);
 		
+	}
+	
+	public void setMaxDurability(int maxdurability){
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), maxdurability, getFlavorText());
+	}
+	
+	public void setDurability(int durability){
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), durability, getMaxDurability(), getFlavorText());
+	}
+	
+	public int getMaxDurability(){
+		if(item.hasItemMeta()){
+			if(item.getItemMeta().hasLore()){
+				String[] amount = null;
+				for(String s : item.getItemMeta().getLore()){
+					if(ChatColor.stripColor(s).contains("Durability:")){
+						s = s.replace("/", " ");
+						amount = ChatColor.stripColor(s).split(" ");
+					}
+				}
+				if(amount == null){
+					return 0;
+				}else{
+					return Integer.valueOf(amount[2]);
+				}
+			}else{
+				return 0;
+			}
+		}else{
+			return 0;
+		}
+	}
+	
+	public int getDurability(){
+		if(item.hasItemMeta()){
+			if(item.getItemMeta().hasLore()){
+				String[] amount = null;
+				for(String s : item.getItemMeta().getLore()){
+					if(ChatColor.stripColor(s).contains("Durability:")){
+						s = s.replace("/", " ");
+						amount = ChatColor.stripColor(s).split(" ");
+					}
+				}
+				if(amount == null){
+					return 0;
+				}else{
+					return Integer.valueOf(amount[1]);
+				}
+			}else{
+				return 0;
+			}
+		}else{
+			return 0;
+		}
 	}
 	
 	public int getInt(){
@@ -176,23 +231,23 @@ public class Weapon{
 	}
 	
 	public void setInt(int amount){
-		setup(getEnchantsAndLevel(), getSlots(), amount, getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), amount, getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public void setStr(int amount){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), amount, getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), amount, getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public void setHp(int amount){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), amount, getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), amount, getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public void setAgi(int amount){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), amount, getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), amount, getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public void setUpgrades(int amount){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), amount, isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), amount, isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public ItemStack getItemStack(){
@@ -204,13 +259,13 @@ public class Weapon{
 		if(enchantments == null)
 			enchantments = new HashMap<Enchantments, Integer>();
 		enchantments.put(enchant, level);
-		setup(enchantments, getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(enchantments, getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public void removeEnchant(Enchantments enchant){
 		HashMap<Enchantments, Integer> enchantments = getEnchantsAndLevel();
 		enchantments.remove(enchant);
-		setup(enchantments, getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(enchantments, getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public List<String> getFlavorText(){
@@ -228,7 +283,7 @@ public class Weapon{
 							break;
 						}
 					}else{
-						if(s.contains("reforges")){
+						if(s.contains("Durability")){
 							pos1 = item.getItemMeta().getLore().indexOf(s) + 2;
 							break;
 						}
@@ -248,7 +303,7 @@ public class Weapon{
 	}
 
 	public void setFlavorText(List<String> flavortext){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), flavortext);
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), flavortext);
 	}
 	
 	public int getWeight(){
@@ -274,11 +329,11 @@ public class Weapon{
 	}
 
 	public void setWeight(int weight){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), weight, getUpgrades(), isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), weight, getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public void setReforges(int reforges){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), reforges, getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), reforges, getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public int getReforges(){
@@ -304,7 +359,7 @@ public class Weapon{
 	}
 	
 	public void setDamage(int damage){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), damage, getReforges(), getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), damage, getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public int getDamage(){
@@ -331,7 +386,7 @@ public class Weapon{
 	}
 	
 	public void setSlots(int slots){
-		setup(getEnchantsAndLevel(), slots, getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getFlavorText());
+		setup(getEnchantsAndLevel(), slots, getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), isProtected(), getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public int getSlots(){
@@ -357,11 +412,11 @@ public class Weapon{
 	}
 	
 	public void unProtect(){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), false, getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), false, getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public void protect(){
-		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), true, getFlavorText());
+		setup(getEnchantsAndLevel(), getSlots(), getInt(), getStr(), getHp(), getAgi(), getDamage(), getReforges(), getWeight(), getUpgrades(), true, getDurability(), getMaxDurability(), getFlavorText());
 	}
 	
 	public boolean isProtected(){

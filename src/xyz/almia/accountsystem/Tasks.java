@@ -148,9 +148,17 @@ public class Tasks{
 									int slots = new Random().nextInt(3);
 									int reforges = new Random().nextInt(2);
 									int upgrades = new Random().nextInt(4);
+									int maxdurability = 0;
+									while(maxdurability < 100){
+										new Random().nextInt(243);
+									}
+									int durability = 0;
+									while(durability < (maxdurability / 2)){
+										new Random().nextInt(243);
+									}
 									int weight = getDefaultWeight(ItemTypes.WEAPON);
 									int damage = getDefaultDamage(item.getType());
-									detailItem.setup(null, slots, 0, 0, 0, 0, damage, reforges, weight, upgrades, false, null);
+									detailItem.setup(null, slots, 0, 0, 0, 0, damage, reforges, weight, upgrades, false, durability, maxdurability, null);
 									p.updateInventory();
 								}
 							}
