@@ -19,7 +19,7 @@ public class Clan {
 	public List<xyz.almia.accountsystem.Character> getClansmen(){
 		List<xyz.almia.accountsystem.Character> characters = new ArrayList<xyz.almia.accountsystem.Character>();
 		for(String name : plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".clansmen")){
-			characters.add(PlayerSetup.getCharacterFromUsername(name));
+			characters.add(new PlayerSetup().getCharacterFromUsername(name));
 		}
 		return characters;
 	}
@@ -44,7 +44,7 @@ public class Clan {
 		if(clan.equals(Clans.UNCLANNED))
 			return null;
 		try{
-			return PlayerSetup.getCharacterFromUsername(plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".king"));
+			return new PlayerSetup().getCharacterFromUsername(plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".king"));
 		}catch(Exception e){
 			return null;
 		}
@@ -87,7 +87,7 @@ public class Clan {
 		
 		List<xyz.almia.accountsystem.Character> characters = new ArrayList<xyz.almia.accountsystem.Character>();
 		for(String name : plugin.getConfig().getStringList("Kings."+clan.toString().toLowerCase()+".rejected")){
-			characters.add(PlayerSetup.getCharacterFromUsername(name));
+			characters.add(new PlayerSetup().getCharacterFromUsername(name));
 		}
 		return characters;
 	}
@@ -112,7 +112,7 @@ public class Clan {
 		if(clan.equals(Clans.UNCLANNED))
 			return null;
 		try{
-			return PlayerSetup.getCharacterFromUsername(plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".proposed"));
+			return new PlayerSetup().getCharacterFromUsername(plugin.getConfig().getString("Kings."+clan.toString().toLowerCase()+".proposed"));
 		}catch(Exception e){
 			return null;
 		}

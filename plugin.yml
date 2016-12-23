@@ -6,6 +6,8 @@ depend: [Vault]
 commands:
   cardinal:
     description: creates detailed items.
+  add:
+    description: creates detailed items.
   rank:
     description: master rank command.
   clan:

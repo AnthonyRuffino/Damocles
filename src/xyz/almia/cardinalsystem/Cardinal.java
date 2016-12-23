@@ -1,11 +1,14 @@
 package xyz.almia.cardinalsystem;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -15,6 +18,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import mkremins.fanciful.FancyMessage;
 import net.milkbowl.vault.economy.Economy;
+import net.minecraft.server.v1_11_R1.NBTTagCompound;
+import net.minecraft.server.v1_11_R1.NBTTagInt;
+import net.minecraft.server.v1_11_R1.NBTTagList;
 import xyz.almia.abilities.DarkMagic;
 import xyz.almia.abilities.Teleport;
 import xyz.almia.accountsystem.Account;
@@ -31,6 +37,7 @@ import xyz.almia.enchantlistener.Eyepatch;
 import xyz.almia.enchantlistener.Jump;
 import xyz.almia.enchantlistener.Speed;
 import xyz.almia.enchantsystem.Enchant;
+import xyz.almia.itemsystem.BlankEnchant;
 import xyz.almia.itemsystem.Enchantments;
 import xyz.almia.itemsystem.ItemHandler;
 import xyz.almia.itemsystem.ItemSerializer;
@@ -51,8 +58,10 @@ import xyz.almia.utils.Message;
 
 public class Cardinal extends JavaPlugin implements Listener{
 	
-    public static Economy econ = null;
+    public Economy econ = null;
 	
+    public Cardinal(){}
+    
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
@@ -254,10 +263,11 @@ public class Cardinal extends JavaPlugin implements Listener{
 		Bukkit.getPluginManager().registerEvents(new Farming(), this);
 		Bukkit.getPluginManager().registerEvents(new DamageSystem(), this);
 		Bukkit.getPluginManager().registerEvents(new SoulSystem(), this);
-		Bukkit.getPluginManager().registerEvents(new ChatSystem(), this);
+		Bukkit.getPluginManager().registerEvents(new ChatSystem(), this); 
 		Bukkit.getPluginManager().registerEvents(new Teleport(), this);
 		Bukkit.getPluginManager().registerEvents(new DarkMagic(), this);
 		Bukkit.getPluginManager().registerEvents(new SelectionMenu(), this);
+		Bukkit.getPluginManager().registerEvents(new AnvilHandler(), this);
 	}
 	
 	public void registerEnchants(){
@@ -279,11 +289,31 @@ public class Cardinal extends JavaPlugin implements Listener{
 		registerEvents();
 		registerEnchants();
 		new Tasks().runTasks();
+		try {
+			Field f = Enchantment.class.getDeclaredField("acceptingNew");
+			f.setAccessible(true);
+			f.set(null, true);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		try{
+			Enchantment.registerEnchantment(ench);
+		}catch(Exception e){
+			
+		}
 	}
 	
 	public void onDisable(){
 		plugin = null;
 	}
+	
+	public static BlankEnchant ench = new BlankEnchant(69);
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(!(sender instanceof Player)){
@@ -292,7 +322,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		Player player = (Player)sender;
 		Account account = new Account(player);
 		xyz.almia.accountsystem.Character character = account.getLoadedCharacter();
-		Clans whatClan = character.getClan();
+		Clans whatClan = new PlayerSetup().getClan(character);
 		Clan clan = new Clan(whatClan);
 		
 		if(cmd.getName().equalsIgnoreCase("logout")){
@@ -327,6 +357,22 @@ public class Cardinal extends JavaPlugin implements Listener{
 			}
 		}
 		
+		if(cmd.getName().equalsIgnoreCase("add")){
+			net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(player.getInventory().getItemInMainHand());
+	        NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
+			NBTTagList ench = new NBTTagList();
+			NBTTagCompound enchant = new NBTTagCompound();
+			enchant.set("id", new NBTTagInt(69));
+			enchant.set("lvl", new NBTTagInt(1));
+			ench.add(enchant);
+			compound.set("ench", ench);
+			compound.set("Count", new NBTTagInt(-1));
+			nmsStack.setTag(compound);
+			player.getInventory().setItemInMainHand(CraftItemStack.asBukkitCopy(nmsStack));
+			new Account(player).getLoadedCharacter().setMaxHealth(200);
+			return true;
+		}
+		
 		if(cmd.getName().equalsIgnoreCase("hat")){
 			player.getInventory().setHelmet(player.getInventory().getItemInMainHand());
 		}
@@ -336,11 +382,9 @@ public class Cardinal extends JavaPlugin implements Listener{
 			
 			Inventory inv = Bukkit.createInventory(null, 9, "items");
 			
-			inv.addItem(ItemSerializer.deserializeItem(Items.EXCALIBUR));
-			inv.addItem(ItemSerializer.deserializeItem(Items.BAT));
-			inv.addItem(ItemSerializer.deserializeItem(Items.KENDO_SWORD));
-			inv.addItem(ItemSerializer.deserializeItem(Items.MURAMASA));
-			inv.addItem(ItemSerializer.deserializeItem(Items.RORAN));
+			for(Items item : Items.values()){
+				inv.addItem(ItemSerializer.deserializeItem(item));
+			}
 			inv.addItem(new Potion(new ItemStack(Material.POTION)).create(PotionTypes.HEALING, 1));
 			inv.addItem(new Potion(new ItemStack(Material.POTION)).create(PotionTypes.MANA, 1));
 			
@@ -378,7 +422,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 			if(args[0].equalsIgnoreCase("set")){
 				if(args.length == 3){
 					try{
-						xyz.almia.accountsystem.Character chara = PlayerSetup.getCharacterFromUsername(args[1]);
+						xyz.almia.accountsystem.Character chara = new PlayerSetup().getCharacterFromUsername(args[1]);
 						xyz.almia.accountsystem.Rank rank = xyz.almia.accountsystem.Rank.valueOf(args[2].toUpperCase());
 						chara.setRank(rank);
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
@@ -404,7 +448,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 			if(args[0].equalsIgnoreCase("get")){
 				if(args.length == 2){
 					try{
-						xyz.almia.accountsystem.Character target = PlayerSetup.getCharacterFromUsername(args[1]);
+						xyz.almia.accountsystem.Character target = new PlayerSetup().getCharacterFromUsername(args[1]);
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Rank");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+args[1]+" is a "+ target.getRank()+"!");
@@ -444,8 +488,8 @@ public class Cardinal extends JavaPlugin implements Listener{
 			Message.sendCenteredMessage(player, ChatColor.BOLD + character.getUsername() + " Stats");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Your current Level is " + ChatColor.GOLD + character.getLevel());
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Your current xp is " + ChatColor.GOLD + character.getExp()+ ChatColor.YELLOW+ " / "+ ChatColor.GOLD + (character.getLevel() * 1028));
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "You currently belong to the "+ character.getClan().toString().toLowerCase().substring(0, 1).toUpperCase() + character.getClan().toString().toLowerCase().substring(1) + " clan.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "your position is " + ChatColor.GRAY + character.getClanRank().toString().toLowerCase().substring(0, 1).toUpperCase() + character.getClanRank().toString().toLowerCase().substring(1));	
+			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "You currently belong to the "+ new PlayerSetup().getClan(character).toString().toLowerCase().substring(0, 1).toUpperCase() + new PlayerSetup().getClan(character).toString().toLowerCase().substring(1) + " clan.");
+			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "your position is " + ChatColor.GRAY + new PlayerSetup().getClanRank(character).toString().toLowerCase().substring(0, 1).toUpperCase() + new PlayerSetup().getClanRank(character).toString().toLowerCase().substring(1));	
 			Message.sendCenteredMessage(player, " ");
 			Message.sendCenteredMessage(player, ChatColor.BOLD + "No Active Bonus' !");
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
@@ -486,12 +530,12 @@ public class Cardinal extends JavaPlugin implements Listener{
 		      }
 		      
 		      if(args[0].equalsIgnoreCase("leave")){
-		    	  if(character.isInClan()){
+		    	  if(new PlayerSetup().isInClan(character)){
 		    		  
 		    		  if(clan.getProposed().getUsername().equalsIgnoreCase(character.getUsername()))
 		    			  clan.setProposed(null);
 		    		  
-		    		  xyz.almia.clansystem.Rank rank = character.getClanRank();
+		    		  xyz.almia.clansystem.Rank rank = new PlayerSetup().getClanRank(character);
 		    		  switch(rank){
 					case CLANSMEN:
 						clan.removeClansmen(character);
@@ -576,7 +620,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		      if(args[0].equalsIgnoreCase("choose")){
 		    	  
 		    	  if(character.getLevel() >= 5){
-			    	  if(!(character.isInClan())){
+			    	  if(!(new PlayerSetup().isInClan(character))){
 			    		  player.openInventory(SelectionMenu.getInstance().generateSelectionInventory());
 			    		  return true;
 			    	  }else{
@@ -722,7 +766,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		     
 		      if(args[0].equalsIgnoreCase("join")){
 		    	  if(args.length == 2){
-			    	  if(!(character.isInClan())){
+			    	  if(!(new PlayerSetup().isInClan(character))){
 			    		  try{
 			    			  Clans clanchoice = Clans.valueOf(args[1].toUpperCase());
 			    			  Clan theClan = new Clan(clanchoice);

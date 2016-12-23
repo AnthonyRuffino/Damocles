@@ -45,6 +45,13 @@ public class ItemHandler implements Listener{
 		}
 	}
 	
+	/*
+	@EventHandler
+	public void onDurbility(){
+		
+	}
+	*/
+	
 	@EventHandler
 	public void onPotionConsume(PlayerItemConsumeEvent event){
 		ItemStack consumed = event.getItem();

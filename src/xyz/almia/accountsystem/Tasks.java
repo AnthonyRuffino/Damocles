@@ -2,7 +2,7 @@ package xyz.almia.accountsystem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -23,6 +24,7 @@ import xyz.almia.itemsystem.Armor;
 import xyz.almia.itemsystem.ItemHandler;
 import xyz.almia.itemsystem.ItemTypes;
 import xyz.almia.itemsystem.Weapon;
+import xyz.almia.menu.AccountMenu;
 import xyz.almia.selectionsystem.Selection;
 import xyz.almia.utils.ConfigManager;
 
@@ -133,9 +135,9 @@ public class Tasks{
 							if(ItemHandler.getType(item).equals(ItemTypes.ARMOR)){
 								Armor detailItem = new Armor(item);
 								if(!(detailItem.isItemSet())){
-									int slots = new Random().nextInt(3);
-									int reforges = new Random().nextInt(2);
-									int upgrades = new Random().nextInt(4);
+									int slots = ThreadLocalRandom.current().nextInt(3);
+									int reforges = ThreadLocalRandom.current().nextInt(2);
+									int upgrades = ThreadLocalRandom.current().nextInt(4);
 									int weight = getDefaultWeight(ItemTypes.ARMOR);
 									int damage = getDefaultDamage(item.getType());
 									detailItem.setup(null, slots, 0, 0, 0, 0, damage, reforges, weight, upgrades, false, null);
@@ -145,17 +147,11 @@ public class Tasks{
 							if(ItemHandler.getType(item).equals(ItemTypes.WEAPON)){
 								Weapon detailItem = new Weapon(item);
 								if(!(detailItem.isItemSet())){
-									int slots = new Random().nextInt(3);
-									int reforges = new Random().nextInt(2);
-									int upgrades = new Random().nextInt(4);
-									int maxdurability = 0;
-									while(maxdurability < 100){
-										new Random().nextInt(243);
-									}
-									int durability = 0;
-									while(durability < (maxdurability / 2)){
-										new Random().nextInt(243);
-									}
+									int slots = ThreadLocalRandom.current().nextInt(3);
+									int reforges = ThreadLocalRandom.current().nextInt(2);
+									int upgrades = ThreadLocalRandom.current().nextInt(4);
+									int maxdurability = ThreadLocalRandom.current().nextInt(143) + 100;
+									int durability = ThreadLocalRandom.current().nextInt(71) + 50;
 									int weight = getDefaultWeight(ItemTypes.WEAPON);
 									int damage = getDefaultDamage(item.getType());
 									detailItem.setup(null, slots, 0, 0, 0, 0, damage, reforges, weight, upgrades, false, durability, maxdurability, null);
@@ -191,8 +187,23 @@ public class Tasks{
 	}
 
 	public void runTasks(){
+		
+		new BukkitRunnable(){
+			@Override
+			public void run() {
+				for(Player player : Bukkit.getOnlinePlayers()){
+					Account account = new Account(player);
+					if(account.getStatus().equals(AccountStatus.LOGGINGIN)){
+						Inventory inv = AccountMenu.getAccountMenu(player);
+						player.openInventory(inv);
+					}		
+				}	
+			}
+		}.runTaskTimer(plugin, 0, 20);
+		
 		addSlotsToItem();
 		Selection.promoteToKing();
+		
 		new BukkitRunnable(){
 			@Override
 			public void run() {
@@ -202,7 +213,6 @@ public class Tasks{
 					
 					if(account.getStatus().equals(AccountStatus.LOGGEDIN)){
 						
-						
 						Character character = account.getLoadedCharacter();
 						
 						if(!(character.getRegening())){
@@ -211,7 +221,7 @@ public class Tasks{
 						}
 						
 						if(character.getCharacterStatus().equals(CharacterStatus.CHOOSE_USERNAME)){
-							PlayerSetup.sendNameSelectionProcess(player);
+							new PlayerSetup().sendNameSelectionProcess(player);
 						}
 						
 						player.setDisplayName(character.getUsername());

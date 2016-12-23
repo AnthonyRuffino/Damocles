@@ -139,7 +139,7 @@ public class EventCanceller implements Listener{
 					String name = event.getItem().getItemStack().getItemMeta().getDisplayName();
 					name = name.replace("$", "");
 					try{
-						EconomyResponse r = Cardinal.econ.depositPlayer(event.getPlayer(), Integer.valueOf(name));
+						EconomyResponse r = new Cardinal().econ.depositPlayer(event.getPlayer(), Integer.valueOf(name));
 			            if(r.transactionSuccess()) {
 			                event.getPlayer().sendMessage(ChatColor.YELLOW+"You have picked up $"+ Integer.valueOf(name)+" Dollars!");
 			                event.setCancelled(true);

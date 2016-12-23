@@ -13,11 +13,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import xyz.almia.cardinalsystem.Cardinal;
-import xyz.almia.menu.AccountMenu;
+import xyz.almia.clansystem.Clan;
+import xyz.almia.clansystem.Clans;
 import xyz.almia.utils.Message;
 import xyz.almia.utils.Swears;
 
@@ -27,7 +26,69 @@ public class PlayerSetup implements Listener{
 		return Cardinal.getPlugin();
 	}
 	
-	public static Character getCharacterFromUsername(String username){
+	public PlayerSetup(){}
+	
+	public xyz.almia.clansystem.Rank getClanRank(Character character){
+		Clans clan = getClan(character);
+		Clan clanProfile = new Clan(clan);
+		
+		if(clan.equals(Clans.UNCLANNED))
+			return xyz.almia.clansystem.Rank.NONE;
+		
+		if(clan.equals(Clans.EXILED))
+			return xyz.almia.clansystem.Rank.CLANSMEN;
+		
+		if(clanProfile.getKing().equals(character)){
+			return xyz.almia.clansystem.Rank.KING;
+		}
+		
+		if(clanProfile.getClansmen().contains(character)){
+			return xyz.almia.clansystem.Rank.CLANSMEN;
+		}
+		
+		return xyz.almia.clansystem.Rank.NONE;
+		
+	}
+	
+	public Clans getClan(Character character){
+		for(Clans clan : Clans.values()){
+			Clan clanProfile = new Clan(clan);
+			
+			if(!(clan.equals(Clans.UNCLANNED))){
+			
+			if(clan.equals(Clans.EXILED)){
+				if(clanProfile.getClansmen().contains(character)){
+					return clan;
+				}
+			}
+			
+			if(!(clan.equals(Clans.EXILED))){
+				if(clanProfile.getClansmen().contains(character)){
+					return clan;
+				}
+				if(clanProfile.getKing() != null){
+					if(clanProfile.getKing().equals(character)){
+						return clan;
+					}
+				}
+			}
+			
+			
+			}
+			
+		}
+		return Clans.UNCLANNED;
+	}
+	
+	public boolean isInClan(Character character){
+		if(getClan(character).equals(Clans.UNCLANNED)){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	public Character getCharacterFromUsername(String username){
 		if(username.equalsIgnoreCase("UNKNOWN"))
 			return null;
 		List<Character> characters = getCharacters();
@@ -39,7 +100,7 @@ public class PlayerSetup implements Listener{
 		return null;
 	}
 	
-	public static List<Character> getCharacters(){
+	public List<Character> getCharacters(){
 		List<String> serchars = getPlugin().getConfig().getStringList("players");
 		List<Character> chars = new ArrayList<Character>();
 		for(String s : serchars){
@@ -48,7 +109,7 @@ public class PlayerSetup implements Listener{
 		return chars;
 	}
 	
-	public static List<String> getCharacterNames(){
+	public List<String> getCharacterNames(){
 		List<Character> chars = getCharacters();
 		List<String> names = new ArrayList<String>();
 		for(Character chara : chars){
@@ -57,7 +118,7 @@ public class PlayerSetup implements Listener{
 		return names;
 	}
 	
-	public static Character deserializeCharacter(String s){
+	public Character deserializeCharacter(String s){
 		String[] args = s.split(";");
 		Player player = Bukkit.getPlayer(UUID.fromString(args[0]));
 		try{
@@ -83,7 +144,7 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(0);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
-						for(int i=0; i < 50;){
+						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
 						}
@@ -97,7 +158,7 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(1);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
-						for(int i=0; i < 50;){
+						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
 						}
@@ -111,7 +172,7 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(2);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
-						for(int i=0; i < 50;){
+						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
 						}
@@ -156,8 +217,8 @@ public class PlayerSetup implements Listener{
 	}
 	
 	
-	public static void sendNameSelectionProcess(Player player){
-		for(int i=0; i < 50;){
+	public void sendNameSelectionProcess(Player player){
+		for(int i=0; i < 16;){
 			player.sendMessage("");
 			i++;
 		}
@@ -186,7 +247,7 @@ public class PlayerSetup implements Listener{
 				
 				if(nameSelection(event.getMessage()).equals(UserReason.NONE)){
 					
-					for(int i=0; i < 50;){
+					for(int i=0; i < 16;){
 						player.sendMessage("");
 						i++;
 					}
@@ -201,7 +262,7 @@ public class PlayerSetup implements Listener{
 					
 				}else{
 					
-					for(int i=0; i < 50;){
+					for(int i=0; i < 16;){
 						player.sendMessage("");
 						i++;
 					}
@@ -216,8 +277,7 @@ public class PlayerSetup implements Listener{
 				
 			}
 			
-		}catch(NullPointerException exception){
-		}
+		}catch(NullPointerException exception){}
 	}
 	
 	@EventHandler
@@ -239,38 +299,13 @@ public class PlayerSetup implements Listener{
 	@EventHandler
 	public void onPlayersFirstJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
-		
 		if(!(player.hasPlayedBefore())){
-			
-			Account account = new Account(player);
-			account.firstTimeSetup();
-			Inventory inv = AccountMenu.getAccountMenu(player);
-			
+			new Account(player).firstTimeSetup();
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			Message.sendCenteredMessage(player, ChatColor.BOLD + "Welcome " + player.getName() + "!");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Please choose a character.");
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-			
-			new BukkitRunnable(){
-				@Override
-				public void run() {
-					if(account.getStatus().equals(AccountStatus.LOGGINGIN)){
-						player.openInventory(inv);
-					}
-				}
-			}.runTaskTimer(Cardinal.getPlugin(), 0, 20);
-			
 		}else{
-			Account account = new Account(player);
-			Inventory inv = AccountMenu.getAccountMenu(player);
-			new BukkitRunnable(){
-				@Override
-				public void run() {
-					if(account.getStatus().equals(AccountStatus.LOGGINGIN)){
-						player.openInventory(inv);
-					}
-				}
-			}.runTaskTimer(Cardinal.getPlugin(), 0, 20);
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			Message.sendCenteredMessage(player, ChatColor.BOLD + "Welcome Back " + player.getName() + "!");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Please select a character.");

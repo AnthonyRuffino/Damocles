@@ -39,7 +39,7 @@ public class PlayerMenu implements Listener{
 				}), Material.END_CRYSTAL);
 		ItemStack prof = MenuItem.createBetterItem(ChatColor.DARK_GRAY + "Professions", Arrays.asList(new String[] { ChatColor.GRAY + "Click to open the Professions menu." }), Material.STONE_PICKAXE);
 		ItemStack skills = MenuItem.createBetterItem(ChatColor.DARK_GRAY + "Skills", Arrays.asList(new String[] { ChatColor.GRAY + "Click to open the Skill menu."}), Material.ENCHANTED_BOOK);
-		ItemStack money = MenuItem.createBetterItem(ChatColor.GREEN+"Balance", Arrays.asList(new String[] { ChatColor.GREEN+"$"+ChatColor.GRAY+""+Cardinal.econ.getBalance(player.getName()) }), Material.EMERALD);
+		ItemStack money = MenuItem.createBetterItem(ChatColor.GREEN+"Balance", Arrays.asList(new String[] { ChatColor.GREEN+"$"+ChatColor.GRAY+""+ new Cardinal().econ.getBalance(player.getName()) }), Material.EMERALD);
 		ItemStack friends = MenuItem.createBetterItem(ChatColor.RED+"Friends", Arrays.asList(new String[] {  }), Material.RED_ROSE);
 		ItemStack ap = MenuItem.createEvenBetterItem(ChatColor.DARK_GRAY + "Ability Points", Arrays.asList(new String[] {ChatColor.GRAY + "Unallocated Points: " + new Account(player).getLoadedCharacter().getAbilityPoints(), ChatColor.GRAY + "Total Points: " + new Account(player).getLoadedCharacter().getLevel() * 3}), Material.EXP_BOTTLE, new Account(player).getLoadedCharacter().getAbilityPoints());
 		ItemStack clan = MenuItem.createClanTag(player);

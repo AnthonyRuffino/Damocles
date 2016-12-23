@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import mkremins.fanciful.FancyMessage;
 import xyz.almia.accountsystem.Account;
 import xyz.almia.accountsystem.AccountStatus;
+import xyz.almia.accountsystem.PlayerSetup;
 import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.clansystem.Clan;
 import xyz.almia.clansystem.Clans;
@@ -27,9 +28,9 @@ public class Selection implements Listener{
 						
 						if(account.getLoadedCharacter().getLevel() >= 5){
 							
-							if(account.getLoadedCharacter().isInClan()){
+							if(new PlayerSetup().isInClan(account.getLoadedCharacter())){
 								
-								Clans clan = account.getLoadedCharacter().getClan();
+								Clans clan = new PlayerSetup().getClan(account.getLoadedCharacter());
 								
 								Clan clanProfile = new Clan(clan);
 								

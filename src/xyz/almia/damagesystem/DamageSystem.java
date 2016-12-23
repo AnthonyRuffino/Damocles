@@ -3,8 +3,8 @@ package xyz.almia.damagesystem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -173,7 +173,7 @@ public class DamageSystem implements Listener{
 								HashMap<Enchantments, Integer> enchantments = detailItem.getEnchantsAndLevel();
 								if(enchantments.containsKey(Enchantments.VOLLEY)){
 									int chance = 0;
-									int rand = new Random().nextInt(100);
+									int rand = ThreadLocalRandom.current().nextInt(100);
 									int level = enchantments.get(Enchantments.VOLLEY);
 									if(level == 1){
 										chance = 100;
@@ -230,7 +230,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.ASSASSIN)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.ASSASSIN);
 								if(level == 1){
 									chance = 12;
@@ -250,7 +250,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.DEMON_SIPHON)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.DEMON_SIPHON);
 								if(level == 1){
 									chance = 8;
@@ -304,7 +304,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.HOLY_SMITE)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.HOLY_SMITE);
 								if(level == 1){
 									chance = 18;
@@ -327,7 +327,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.SNARE)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.SNARE);
 								if(level == 1){
 									chance = 8;
@@ -359,7 +359,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.SOULSHOT)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.SOULSHOT);
 								if(level == 1){
 									chance = 18;
@@ -371,7 +371,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.WILD_MARK)){
 								int chance = 100;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.WILD_MARK);
 								if((rand <= chance)){
 									itemDamage = itemDamage + (1 + ( (level - 1) * (2* (1/4) ) ) );
@@ -407,7 +407,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.PETRIFY)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.PETRIFY);
 								if(level == 1){
 									chance = 5;
@@ -440,7 +440,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.ASSASSIN)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.ASSASSIN);
 								if(level == 1){
 									chance = 12;
@@ -484,7 +484,7 @@ public class DamageSystem implements Listener{
 					if(enchants != null){
 						if(enchants.containsKey(Enchantments.AEGIS)){
 							int chance = 0;
-							int rand = new Random().nextInt(100);
+							int rand = ThreadLocalRandom.current().nextInt(100);
 							int level = enchants.get(Enchantments.AEGIS);
 							if(level == 1){
 								chance = 12;
@@ -526,7 +526,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.LIFESTEAL)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.LIFESTEAL);
 								if(level == 1){
 									chance = 8;
@@ -543,7 +543,7 @@ public class DamageSystem implements Listener{
 							
 							if(enchants.containsKey(Enchantments.SWIPE)){
 								int chance = 0;
-								int rand = new Random().nextInt(100);
+								int rand = ThreadLocalRandom.current().nextInt(100);
 								int level = enchants.get(Enchantments.SWIPE);
 								if(level == 1){
 									chance = 12;

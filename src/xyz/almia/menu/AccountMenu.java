@@ -24,6 +24,7 @@ public class AccountMenu {
 		ItemStack emp = MenuItem.createItem("", "", Material.STAINED_GLASS_PANE);
 		
 		Account account = new Account(player);
+		
 		xyz.almia.accountsystem.Character characterOne = account.getCharacterFromID(0);
 		xyz.almia.accountsystem.Character characterTwo = account.getCharacterFromID(1);
 		xyz.almia.accountsystem.Character characterThree = account.getCharacterFromID(2);

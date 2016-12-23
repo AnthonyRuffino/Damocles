@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -18,9 +19,9 @@ public class Weapon{
 		this.item = item;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void setup(HashMap<Enchantments, Integer> enchants, int slots, int intel, int str, int hp, int agi ,int damage, int reforges, int weight, int upgrades, boolean isprotected, int durability, int maxdurability, List<String> flavortext){
-		
-		ItemMeta im = item.getItemMeta();
+		ItemMeta im = this.item.getItemMeta();
 		List<String> lore = new ArrayList<String>();
 		lore.add("");
 		
@@ -57,9 +58,18 @@ public class Weapon{
 		}
 		
 		im.setLore(lore);
+		im.spigot().setUnbreakable(true);
+		im.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 		im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		item.setItemMeta(im);
 		
+	}
+	
+	@SuppressWarnings("deprecation")
+	public String getName(){
+		if(item.getItemMeta().hasDisplayName())
+			return item.getItemMeta().getDisplayName();
+		return StringUtils.capitaliseAllWords(item.getType().toString().toLowerCase());
 	}
 	
 	public void setMaxDurability(int maxdurability){

@@ -2,14 +2,11 @@ package xyz.almia.accountsystem;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import xyz.almia.cardinalsystem.Cardinal;
-import xyz.almia.clansystem.Clan;
-import xyz.almia.clansystem.Clans;
 import xyz.almia.messagesystem.Messages;
 import xyz.almia.utils.ConfigManager;
 import xyz.almia.utils.LocationSerializer;
@@ -76,66 +73,6 @@ public class Character {
 	public void setPExp(Profession prof, int value){
 		config.set("profession."+prof.toString().toLowerCase()+".exp", value);
 		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
-	}
-	
-	
-	
-	public xyz.almia.clansystem.Rank getClanRank(){
-		Clans clan = getClan();
-		Clan clanProfile = new Clan(clan);
-		
-		if(clan.equals(Clans.UNCLANNED))
-			return xyz.almia.clansystem.Rank.NONE;
-		
-		if(clan.equals(Clans.EXILED))
-			return xyz.almia.clansystem.Rank.CLANSMEN;
-		
-		if(clanProfile.getKing().getUsername().equalsIgnoreCase(getUsername())){
-			return xyz.almia.clansystem.Rank.KING;
-		}
-		
-		if(clanProfile.getClansmen().contains(getUsername())){
-			return xyz.almia.clansystem.Rank.CLANSMEN;
-		}
-		
-		return xyz.almia.clansystem.Rank.NONE;
-		
-	}
-	
-	public Clans getClan(){
-		for(Clans clan : Clans.values()){
-			Clan clanProfile = new Clan(clan);
-			
-			if(!(clan.equals(Clans.UNCLANNED))){
-			
-			if(clan.equals(Clans.EXILED)){
-				if(clanProfile.getClansmen().contains(getUsername())){
-					return clan;
-				}
-			}
-			
-			if(!(clan.equals(Clans.EXILED))){
-				if(clanProfile.getClansmen().contains(getUsername())){
-					return clan;
-				}
-				if(clanProfile.getKing().getUsername().contains(getUsername())){
-					return clan;
-				}
-			}
-			
-			
-			}
-			
-		}
-		return Clans.UNCLANNED;
-	}
-	
-	public boolean isInClan(){
-		if(getClan().equals(Clans.UNCLANNED)){
-			return false;
-		}else{
-			return true;
-		}
 	}
 	
 	public CharacterStatus getCharacterStatus(){
