@@ -5,8 +5,7 @@ import xyz.almia.cardinalsystem.Cardinal;
 
 public class MiningExp {
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public int iron(){
 		return plugin.getConfig().getInt("Cardinal.professions.mining.iron");

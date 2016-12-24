@@ -31,8 +31,7 @@ import xyz.almia.utils.Message;
 
 public class ItemHandler implements Listener{
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
 	Rune rune = new Rune();
 	

@@ -24,8 +24,7 @@ import xyz.almia.menu.MenuItem;
 
 public class Smelting implements Listener{
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	CookingExp cookingexp = new CookingExp();
 	SmeltingExp smeltingexp = new SmeltingExp();
 	

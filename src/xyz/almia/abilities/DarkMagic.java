@@ -22,10 +22,11 @@ import xyz.almia.utils.ConfigManager;
 
 public class DarkMagic implements Listener{
 	
-	private static Cardinal cardinal = new Cardinal();
-	static Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
-	public static void darkMagic(){
+	public DarkMagic() {}
+	
+	public void darkMagic(){
 		new BukkitRunnable(){
 
 			@Override

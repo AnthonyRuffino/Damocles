@@ -24,8 +24,7 @@ public class SelectionMenu implements Listener{
 	
     private static SelectionMenu instance;
     
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
     
     public SelectionMenu() {}
     

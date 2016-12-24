@@ -25,8 +25,7 @@ public class Mining implements Listener{
 	 *    - Added dropAmount/bonus' depending on level.
 	 */
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	MiningExp miningexp = new MiningExp();
 	
 	@EventHandler

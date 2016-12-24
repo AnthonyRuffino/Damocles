@@ -20,8 +20,7 @@ import xyz.almia.utils.RomanNumerals;
 
 public class Jump {
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	ItemHandler itemhandler = new ItemHandler();
 	
 	public Jump() {}

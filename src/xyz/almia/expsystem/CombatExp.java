@@ -6,8 +6,7 @@ import xyz.almia.cardinalsystem.Cardinal;
 
 public class CombatExp {
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public CombatExp() {}
 	

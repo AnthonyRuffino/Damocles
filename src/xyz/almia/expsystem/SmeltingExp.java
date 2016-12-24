@@ -5,8 +5,8 @@ import org.bukkit.plugin.Plugin;
 import xyz.almia.cardinalsystem.Cardinal;
 
 public class SmeltingExp {
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public SmeltingExp() {}
 	

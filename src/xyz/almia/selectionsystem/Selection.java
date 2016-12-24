@@ -18,8 +18,7 @@ import xyz.almia.utils.Message;
 
 public class Selection implements Listener{
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public void promoteToKing(){
 		new BukkitRunnable(){

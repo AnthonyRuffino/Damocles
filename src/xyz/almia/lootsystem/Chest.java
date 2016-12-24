@@ -4,9 +4,8 @@ import org.bukkit.plugin.Plugin;
 import xyz.almia.cardinalsystem.Cardinal;
 
 public class Chest {
-
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	
+	Plugin plugin = Cardinal.getPlugin();
 	
         		/*new BukkitRunnable(){
         			double t = 0;

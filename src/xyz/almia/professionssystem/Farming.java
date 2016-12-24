@@ -15,8 +15,7 @@ import xyz.almia.expsystem.FarmingExp;
 
 public class Farming implements Listener{
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	FarmingExp farmingexp = new FarmingExp();
 	
 	@SuppressWarnings("deprecation")

@@ -59,12 +59,10 @@ public class Cardinal extends JavaPlugin implements Listener{
 	
     public Economy econ = null;
 	public BlankEnchant ench = new BlankEnchant(69);
-	public Plugin plugin;
+	public static Plugin plugin;
 	private PlayerSetup playersetup = new PlayerSetup();
 	private xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
 	private Rune rune = new Rune();
-	
-    public Cardinal(){}
     
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -78,7 +76,7 @@ public class Cardinal extends JavaPlugin implements Listener{
         return econ != null;
     }
 	
-	public Plugin getPlugin() {
+	public static Plugin getPlugin() {
 		return plugin;
 	}
 	
@@ -278,7 +276,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		new BatVision().checkForBatEnchant();
 		new Speed().checkForSpeedEnchant();
 		new Jump().checkForJumpEnchant();
-		DarkMagic.darkMagic();
+		new DarkMagic().darkMagic();
 	}
 
 	public void onEnable(){

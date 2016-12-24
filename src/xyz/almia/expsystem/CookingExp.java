@@ -5,8 +5,7 @@ import xyz.almia.cardinalsystem.Cardinal;
 
 public class CookingExp {
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public CookingExp() {}
 	

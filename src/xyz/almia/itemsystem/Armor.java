@@ -15,8 +15,7 @@ import xyz.almia.utils.RomanNumerals;
 
 public class Armor {
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
 	
 	private ItemStack item;

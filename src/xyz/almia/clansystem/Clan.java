@@ -10,8 +10,7 @@ import xyz.almia.cardinalsystem.Cardinal;
 public class Clan {
 	
 	private Clans clan;
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public Clan(Clans clan){
 		this.clan = clan;

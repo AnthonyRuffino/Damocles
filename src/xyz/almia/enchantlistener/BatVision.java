@@ -18,8 +18,7 @@ public class BatVision {
 	
 	public BatVision(){}
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	ItemHandler itemhandler = new ItemHandler();
 	
 	public void checkForBatEnchant(){

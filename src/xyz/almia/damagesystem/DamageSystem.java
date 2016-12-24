@@ -41,8 +41,7 @@ import xyz.almia.utils.RomanNumerals;
 
 public class DamageSystem implements Listener{
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public int getArmorValue(Player player){
 		int armor = 0;

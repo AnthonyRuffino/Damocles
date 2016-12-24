@@ -11,8 +11,7 @@ import xyz.almia.utils.Message;
 
 public class Messages {
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public static void proflevelUp(Profession prof, Player player){
 		int nextlvl = new Account(player).getLoadedCharacter().getPLevel(prof) + 1;
