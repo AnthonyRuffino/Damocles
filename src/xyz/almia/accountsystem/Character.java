@@ -13,8 +13,7 @@ import xyz.almia.utils.LocationSerializer;
 
 public class Character {
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	private Player player;
 	int characterID = 0;
 	FileConfiguration config;

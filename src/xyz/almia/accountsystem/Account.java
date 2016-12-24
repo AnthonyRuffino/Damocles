@@ -8,8 +8,7 @@ import xyz.almia.utils.ConfigManager;
 
 public class Account {
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	public Player player;
 	FileConfiguration config;
 	

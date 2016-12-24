@@ -23,8 +23,7 @@ import xyz.almia.utils.Swears;
 public class PlayerSetup implements Listener{
 	
 	
-	private Cardinal cardinal = new Cardinal();
-	Plugin plugin = cardinal.getPlugin();
+	Plugin plugin = Cardinal.getPlugin();
 	
 	public PlayerSetup(){}
 	
