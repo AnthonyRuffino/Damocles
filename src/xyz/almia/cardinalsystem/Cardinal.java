@@ -20,12 +20,12 @@ import mkremins.fanciful.FancyMessage;
 import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
 import net.minecraft.server.v1_11_R1.NBTTagInt;
-import net.minecraft.server.v1_11_R1.NBTTagList;
 import xyz.almia.abilities.DarkMagic;
 import xyz.almia.abilities.Teleport;
 import xyz.almia.accountsystem.Account;
 import xyz.almia.accountsystem.EventCanceller;
 import xyz.almia.accountsystem.PlayerSetup;
+import xyz.almia.accountsystem.Rank;
 import xyz.almia.accountsystem.Tasks;
 import xyz.almia.chatsystem.ChatSystem;
 import xyz.almia.clansystem.Clan;
@@ -45,7 +45,6 @@ import xyz.almia.itemsystem.Items;
 import xyz.almia.itemsystem.Potion;
 import xyz.almia.itemsystem.PotionTypes;
 import xyz.almia.itemsystem.Rune;
-import xyz.almia.lootsystem.Chest;
 import xyz.almia.menu.ClanMenu;
 import xyz.almia.menu.PlayerMenu;
 import xyz.almia.menu.SelectionMenu;
@@ -59,6 +58,11 @@ import xyz.almia.utils.Message;
 public class Cardinal extends JavaPlugin implements Listener{
 	
     public Economy econ = null;
+	public BlankEnchant ench = new BlankEnchant(69);
+	public Plugin plugin;
+	private PlayerSetup playersetup = new PlayerSetup();
+	private xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	private Rune rune = new Rune();
 	
     public Cardinal(){}
     
@@ -74,8 +78,7 @@ public class Cardinal extends JavaPlugin implements Listener{
         return econ != null;
     }
 	
-	public static Plugin plugin;
-	public static Plugin getPlugin() {
+	public Plugin getPlugin() {
 		return plugin;
 	}
 	
@@ -271,10 +274,10 @@ public class Cardinal extends JavaPlugin implements Listener{
 	}
 	
 	public void registerEnchants(){
-		Eyepatch.checkForEyepatchEnchant();
-		BatVision.checkForBatEnchant();
-		Speed.checkForSpeedEnchant();
-		Jump.checkForJumpEnchant();
+		new Eyepatch().checkForEyepatchEnchant();
+		new BatVision().checkForBatEnchant();
+		new Speed().checkForSpeedEnchant();
+		new Jump().checkForJumpEnchant();
 		DarkMagic.darkMagic();
 	}
 
@@ -312,9 +315,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 	public void onDisable(){
 		plugin = null;
 	}
-	
-	public static BlankEnchant ench = new BlankEnchant(69);
-	
+
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(!(sender instanceof Player)){
 			sender.sendMessage("You must be a player to use commands!");
@@ -322,7 +323,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		Player player = (Player)sender;
 		Account account = new Account(player);
 		xyz.almia.accountsystem.Character character = account.getLoadedCharacter();
-		Clans whatClan = new PlayerSetup().getClan(character);
+		Clans whatClan = playersetup.getClan(character);
 		Clan clan = new Clan(whatClan);
 		
 		if(cmd.getName().equalsIgnoreCase("logout")){
@@ -358,19 +359,53 @@ public class Cardinal extends JavaPlugin implements Listener{
 		}
 		
 		if(cmd.getName().equalsIgnoreCase("add")){
-			net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(player.getInventory().getItemInMainHand());
+			ItemStack item = new ItemStack(Material.POTION);
+			net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 	        NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-			NBTTagList ench = new NBTTagList();
-			NBTTagCompound enchant = new NBTTagCompound();
-			enchant.set("id", new NBTTagInt(69));
-			enchant.set("lvl", new NBTTagInt(1));
-			ench.add(enchant);
-			compound.set("ench", ench);
-			compound.set("Count", new NBTTagInt(-1));
+	        compound.set("CustomPotionColor", new NBTTagInt(4628544));
 			nmsStack.setTag(compound);
-			player.getInventory().setItemInMainHand(CraftItemStack.asBukkitCopy(nmsStack));
-			new Account(player).getLoadedCharacter().setMaxHealth(200);
+			player.getInventory().addItem(CraftItemStack.asBukkitCopy(nmsStack));
+		
 			return true;
+		}
+		
+		if(cmd.getName().equalsIgnoreCase("heal")){
+			if(character.getRank().equals(Rank.GAMEMASTER)){
+				if(args.length == 0){
+					character.setHealth(character.getMaxHealth());
+					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+					Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+					Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have been healed!");
+					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+					return true;
+				}else if(args.length == 1){
+					try{
+						xyz.almia.accountsystem.Character target = playersetup.getCharacterFromUsername(args[0]);
+						target.setHealth(target.getMaxHealth());
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have healed " + target.getUsername() + " !");
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(target.getPlayer(), ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(target.getPlayer(), ChatColor.BOLD + "Help");
+						Message.sendCenteredMessage(target.getPlayer(), ChatColor.YELLOW+"You have been healed!");
+						Message.sendCenteredMessage(target.getPlayer(), ChatColor.GREEN+"----------------------------------------------------");
+						return true;
+					}catch(Exception e){
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+"Player " + args[0] + " does not exist or is offline.");
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						return true;
+					}
+				}else{
+					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+					Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+					Message.sendCenteredMessage(player, ChatColor.YELLOW+"Improper command usage, use /heal <Player>");
+					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+					return true;
+				}
+			}
 		}
 		
 		if(cmd.getName().equalsIgnoreCase("hat")){
@@ -422,7 +457,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 			if(args[0].equalsIgnoreCase("set")){
 				if(args.length == 3){
 					try{
-						xyz.almia.accountsystem.Character chara = new PlayerSetup().getCharacterFromUsername(args[1]);
+						xyz.almia.accountsystem.Character chara = playersetup.getCharacterFromUsername(args[1]);
 						xyz.almia.accountsystem.Rank rank = xyz.almia.accountsystem.Rank.valueOf(args[2].toUpperCase());
 						chara.setRank(rank);
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
@@ -448,7 +483,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 			if(args[0].equalsIgnoreCase("get")){
 				if(args.length == 2){
 					try{
-						xyz.almia.accountsystem.Character target = new PlayerSetup().getCharacterFromUsername(args[1]);
+						xyz.almia.accountsystem.Character target = playersetup.getCharacterFromUsername(args[1]);
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Rank");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+args[1]+" is a "+ target.getRank()+"!");
@@ -488,17 +523,13 @@ public class Cardinal extends JavaPlugin implements Listener{
 			Message.sendCenteredMessage(player, ChatColor.BOLD + character.getUsername() + " Stats");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Your current Level is " + ChatColor.GOLD + character.getLevel());
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Your current xp is " + ChatColor.GOLD + character.getExp()+ ChatColor.YELLOW+ " / "+ ChatColor.GOLD + (character.getLevel() * 1028));
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "You currently belong to the "+ new PlayerSetup().getClan(character).toString().toLowerCase().substring(0, 1).toUpperCase() + new PlayerSetup().getClan(character).toString().toLowerCase().substring(1) + " clan.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "your position is " + ChatColor.GRAY + new PlayerSetup().getClanRank(character).toString().toLowerCase().substring(0, 1).toUpperCase() + new PlayerSetup().getClanRank(character).toString().toLowerCase().substring(1));	
+			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "You currently belong to the "+ playersetup.getClan(character).toString().toLowerCase().substring(0, 1).toUpperCase() + playersetup.getClan(character).toString().toLowerCase().substring(1) + " clan.");
+			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "your position is " + ChatColor.GRAY + playersetup.getClanRank(character).toString().toLowerCase().substring(0, 1).toUpperCase() + playersetup.getClanRank(character).toString().toLowerCase().substring(1));	
 			Message.sendCenteredMessage(player, " ");
 			Message.sendCenteredMessage(player, ChatColor.BOLD + "No Active Bonus' !");
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			player.openInventory(PlayerMenu.createMenu(player));
 			return true;
-		}
-		
-		if(cmd.getName().equalsIgnoreCase("chest")){
-			Chest.createLootChest(player.getLocation(), null);
 		}
 		
 		if(cmd.getName().equalsIgnoreCase("clan")){
@@ -530,12 +561,12 @@ public class Cardinal extends JavaPlugin implements Listener{
 		      }
 		      
 		      if(args[0].equalsIgnoreCase("leave")){
-		    	  if(new PlayerSetup().isInClan(character)){
+		    	  if(playersetup.isInClan(character)){
 		    		  
 		    		  if(clan.getProposed().getUsername().equalsIgnoreCase(character.getUsername()))
 		    			  clan.setProposed(null);
 		    		  
-		    		  xyz.almia.clansystem.Rank rank = new PlayerSetup().getClanRank(character);
+		    		  xyz.almia.clansystem.Rank rank = playersetup.getClanRank(character);
 		    		  switch(rank){
 					case CLANSMEN:
 						clan.removeClansmen(character);
@@ -620,7 +651,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		      if(args[0].equalsIgnoreCase("choose")){
 		    	  
 		    	  if(character.getLevel() >= 5){
-			    	  if(!(new PlayerSetup().isInClan(character))){
+			    	  if(!(playersetup.isInClan(character))){
 			    		  player.openInventory(SelectionMenu.getInstance().generateSelectionInventory());
 			    		  return true;
 			    	  }else{
@@ -766,7 +797,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		     
 		      if(args[0].equalsIgnoreCase("join")){
 		    	  if(args.length == 2){
-			    	  if(!(new PlayerSetup().isInClan(character))){
+			    	  if(!(playersetup.isInClan(character))){
 			    		  try{
 			    			  Clans clanchoice = Clans.valueOf(args[1].toUpperCase());
 			    			  Clan theClan = new Clan(clanchoice);
@@ -856,7 +887,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 					
 					String enchants = "";
 					for(Enchantments enchant : Enchantments.values()){
-						enchants = enchants + ChatColor.GOLD+ Enchantments.getName(enchant) + ChatColor.YELLOW+ ", ";
+						enchants = enchants + ChatColor.GOLD+ enchantclass.getName(enchant) + ChatColor.YELLOW+ ", ";
 					}
 					Message.sendCenteredMessage(player, enchants);
 					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
@@ -871,7 +902,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 				if(args.length == 2){
 					try{
 						int slots = Integer.valueOf(args[1]);
-						player.getInventory().addItem(Rune.createSlotRune(slots));
+						player.getInventory().addItem(rune.createSlotRune(slots));
 						return true;
 					}catch(Exception e){
 			    		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
@@ -888,7 +919,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 			}else if(args[0].equalsIgnoreCase("protection")){
 				if(args.length == 1){
 					try{
-						player.getInventory().addItem(Rune.createProtectionRune());
+						player.getInventory().addItem(rune.createProtectionRune());
 						return true;
 					}catch(Exception e){
 			    		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
@@ -910,11 +941,11 @@ public class Cardinal extends JavaPlugin implements Listener{
 				int level = Integer.valueOf(args[1]);
 				int success = Integer.valueOf(args[2]);
 				int destroy = Integer.valueOf(args[3]);
-				if(level > Enchantments.getMaxLevel(enchant)){
-					player.sendMessage(ChatColor.YELLOW + "Error: The max level for " + Enchantments.getName(enchant) + " is " + Enchantments.getMaxLevel(enchant));
+				if(level > enchantclass.getMaxLevel(enchant)){
+					player.sendMessage(ChatColor.YELLOW + "Error: The max level for " + enchantclass.getName(enchant) + " is " + enchantclass.getMaxLevel(enchant));
 					return true;
 				}
-				player.getInventory().addItem(Rune.createRune(enchant, level, success, destroy));
+				player.getInventory().addItem(rune.createRune(enchant, level, success, destroy));
 				return true;
 			}catch(Exception e){
 	    		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");

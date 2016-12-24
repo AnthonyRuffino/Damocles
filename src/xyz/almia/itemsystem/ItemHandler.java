@@ -18,15 +18,25 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
+
 import mkremins.fanciful.FancyMessage;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
 import net.minecraft.server.v1_11_R1.NBTTagInt;
 import net.minecraft.server.v1_11_R1.NBTTagList;
 import net.minecraft.server.v1_11_R1.NBTTagString;
 import xyz.almia.accountsystem.Account;
+import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.utils.Message;
 
 public class ItemHandler implements Listener{
+	
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
+	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	Rune rune = new Rune();
+	
+	public ItemHandler() {}
 	
 	public static ItemTypes getType(ItemStack item){
 		switch(item.getType()){
@@ -98,7 +108,7 @@ public class ItemHandler implements Listener{
 		}
 	}
 	
-	public static EnchantTypes getEnchantType(ItemStack item){
+	public EnchantTypes getEnchantType(ItemStack item){
 		switch(item.getType()){
 		case DIAMOND_HELMET: case IRON_HELMET: case CHAINMAIL_HELMET: case GOLD_HELMET: case LEATHER_HELMET:
 			return EnchantTypes.HELMET;
@@ -117,7 +127,7 @@ public class ItemHandler implements Listener{
 		}
 	}
 	
-	public static ItemStack buildItem(Material material,String name, List<String> lore, int amount, int durability){
+	public ItemStack buildItem(Material material,String name, List<String> lore, int amount, int durability){
 		ItemStack x = new ItemStack(material, amount);
         net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(x);
         NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
@@ -179,7 +189,7 @@ public class ItemHandler implements Listener{
 							if(!(detailItem.isProtected())){
 								event.setCancelled(true);
 								detailItem.protect();
-								event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+								event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 					    		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 					    		Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have successfully Protected your equip!");
 					    		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
@@ -196,7 +206,7 @@ public class ItemHandler implements Listener{
 							if(!(detailItem.isProtected())){
 								event.setCancelled(true);
 								detailItem.protect();
-								event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+								event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 					    		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 					    		Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have successfully Protected your equip!");
 					    		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
@@ -223,9 +233,9 @@ public class ItemHandler implements Listener{
 							Armor detailItem = new Armor(event.getCurrentItem());
 							if(event.getCursor().hasItemMeta()){
 								event.setCancelled(true);
-								int slots = Rune.getSlotsFromRune(event.getCursor());
-								detailItem.setSlots(detailItem.getSlots() + Rune.getSlotsFromRune(event.getCursor()));
-								event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+								int slots = rune.getSlotsFromRune(event.getCursor());
+								detailItem.setSlots(detailItem.getSlots() + rune.getSlotsFromRune(event.getCursor()));
+								event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 								String item = new FancyMessage("                     You added "+slots+" to ")
 										.color(ChatColor.YELLOW)
 										.then("this")
@@ -244,9 +254,9 @@ public class ItemHandler implements Listener{
 							Weapon detailItem = new Weapon(event.getCurrentItem());
 							if(event.getCursor().hasItemMeta()){
 								event.setCancelled(true);
-								int slots = Rune.getSlotsFromRune(event.getCursor());
-								detailItem.setSlots(detailItem.getSlots() + Rune.getSlotsFromRune(event.getCursor()));
-								event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+								int slots = rune.getSlotsFromRune(event.getCursor());
+								detailItem.setSlots(detailItem.getSlots() + rune.getSlotsFromRune(event.getCursor()));
+								event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 								String item = new FancyMessage("                     You added "+slots+" to ")
 										.color(ChatColor.YELLOW)
 										.then("this")
@@ -279,7 +289,7 @@ public class ItemHandler implements Listener{
 							
 							Armor detailItem = new Armor(event.getCurrentItem());
 							
-							Map<String, Integer> values = Rune.getRune(event.getCursor());
+							Map<String, Integer> values = rune.getRune(event.getCursor());
 							Enchantments enchantment = null;
 							int enchantLevel = 0;
 							int enchantSuccess = 0;
@@ -312,42 +322,42 @@ public class ItemHandler implements Listener{
 							if(detailItem.getSlots() > 0){
 								
 								
-								if(Enchantments.getType(enchantment).equals(EnchantTypes.ARMOR)){
+								if(enchantclass.getType(enchantment).equals(EnchantTypes.ARMOR)){
 									event.setCancelled(true);
 									ItemStack item = enchant(player, event.getCurrentItem(), enchantment, enchantLevel, enchantSuccess, enchantDestroy);
 									event.setCurrentItem(item);
-									event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+									event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 									return;
-								}else if(Enchantments.getType(enchantment).equals(EnchantTypes.BOOTS)){
-									if(ItemHandler.getEnchantType(event.getCurrentItem()).equals(EnchantTypes.BOOTS)){
+								}else if(enchantclass.getType(enchantment).equals(EnchantTypes.BOOTS)){
+									if(getEnchantType(event.getCurrentItem()).equals(EnchantTypes.BOOTS)){
 										event.setCancelled(true);
 										ItemStack item = enchant(player, event.getCurrentItem(), enchantment, enchantLevel, enchantSuccess, enchantDestroy);
 										event.setCurrentItem(item);
-										event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+										event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 										return;
 									}
-								}else if(Enchantments.getType(enchantment).equals(EnchantTypes.LEGGINGS)){
-									if(ItemHandler.getEnchantType(event.getCurrentItem()).equals(EnchantTypes.LEGGINGS)){
+								}else if(enchantclass.getType(enchantment).equals(EnchantTypes.LEGGINGS)){
+									if(getEnchantType(event.getCurrentItem()).equals(EnchantTypes.LEGGINGS)){
 										event.setCancelled(true);
 										ItemStack item = enchant(player, event.getCurrentItem(), enchantment, enchantLevel, enchantSuccess, enchantDestroy);
 										event.setCurrentItem(item);
-										event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+										event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 										return;
 									}
-								}else if(Enchantments.getType(enchantment).equals(EnchantTypes.CHESTPLATE)){
-									if(ItemHandler.getEnchantType(event.getCurrentItem()).equals(EnchantTypes.CHESTPLATE)){
+								}else if(enchantclass.getType(enchantment).equals(EnchantTypes.CHESTPLATE)){
+									if(getEnchantType(event.getCurrentItem()).equals(EnchantTypes.CHESTPLATE)){
 										event.setCancelled(true);
 										ItemStack item = enchant(player, event.getCurrentItem(), enchantment, enchantLevel, enchantSuccess, enchantDestroy);
 										event.setCurrentItem(item);
-										event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+										event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 										return;
 									}
-								}else if(Enchantments.getType(enchantment).equals(EnchantTypes.HELMET)){
-									if(ItemHandler.getEnchantType(event.getCurrentItem()).equals(EnchantTypes.HELMET)){
+								}else if(enchantclass.getType(enchantment).equals(EnchantTypes.HELMET)){
+									if(getEnchantType(event.getCurrentItem()).equals(EnchantTypes.HELMET)){
 										event.setCancelled(true);
 										ItemStack item = enchant(player, event.getCurrentItem(), enchantment, enchantLevel, enchantSuccess, enchantDestroy);
 										event.setCurrentItem(item);
-										event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+										event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 										return;
 									}
 								}else{
@@ -361,7 +371,7 @@ public class ItemHandler implements Listener{
 							
 							Weapon detailItem = new Weapon(event.getCurrentItem());
 							
-							Map<String, Integer> values = Rune.getRune(event.getCursor());
+							Map<String, Integer> values = rune.getRune(event.getCursor());
 							Enchantments enchantment = null;
 							int enchantLevel = 0;
 							int enchantSuccess = 0;
@@ -394,20 +404,20 @@ public class ItemHandler implements Listener{
 							if(detailItem.getSlots() > 0){
 								
 								
-								if(Enchantments.getType(enchantment).equals(EnchantTypes.SWORD)){
-									if(ItemHandler.getEnchantType(event.getCurrentItem()).equals(EnchantTypes.SWORD)){
+								if(enchantclass.getType(enchantment).equals(EnchantTypes.SWORD)){
+									if(getEnchantType(event.getCurrentItem()).equals(EnchantTypes.SWORD)){
 										event.setCancelled(true);
 										ItemStack item = enchant(player, event.getCurrentItem(), enchantment, enchantLevel, enchantSuccess, enchantDestroy);
 										event.setCurrentItem(item);
-										event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+										event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 										return;
 									}
-								}else if(Enchantments.getType(enchantment).equals(EnchantTypes.BOW)){
-									if(ItemHandler.getEnchantType(event.getCurrentItem()).equals(EnchantTypes.BOW)){
+								}else if(enchantclass.getType(enchantment).equals(EnchantTypes.BOW)){
+									if(getEnchantType(event.getCurrentItem()).equals(EnchantTypes.BOW)){
 										event.setCancelled(true);
 										ItemStack item = enchant(player, event.getCurrentItem(), enchantment, enchantLevel, enchantSuccess, enchantDestroy);
 										event.setCurrentItem(item);
-										event.setCursor(Rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
+										event.setCursor(rune.setAmount(event.getCursor(), event.getCursor().getAmount() - 1));
 										return;
 									}
 								}else{
@@ -431,13 +441,13 @@ public class ItemHandler implements Listener{
 		}
 	}
 	
-	public static ItemStack enchant(Player source, ItemStack item, Enchantments enchant, int level, int success, int destroy){
+	public ItemStack enchant(Player source, ItemStack item, Enchantments enchant, int level, int success, int destroy){
 		if(ItemHandler.getType(item).equals(ItemTypes.ARMOR)){
 			Armor detailItem = new Armor(item);
 			int random = new Random().nextInt(100);
 			if(random <= success){
 				Message.sendCenteredMessage(source, ChatColor.GREEN+"----------------------------------------------------");
-				String items = new FancyMessage("                     You added "+Enchantments.getName(enchant)+" to ")
+				String items = new FancyMessage("                     You added "+ enchantclass.getName(enchant)+" to ")
 						.color(ChatColor.YELLOW)
 						.then("this")
 						.color(ChatColor.GOLD)
@@ -455,7 +465,7 @@ public class ItemHandler implements Listener{
 				int randDestroy = new Random().nextInt(100);
 				if(randDestroy <= destroy){
 					Message.sendCenteredMessage(source, ChatColor.GREEN+"----------------------------------------------------");
-					String items = new FancyMessage("                     You have failed to add "+Enchantments.getName(enchant)+" to ")
+					String items = new FancyMessage("                     You have failed to add "+ enchantclass.getName(enchant)+" to ")
 							.color(ChatColor.YELLOW)
 							.then("this")
 							.color(ChatColor.GOLD)
@@ -483,7 +493,7 @@ public class ItemHandler implements Listener{
 			int random = new Random().nextInt(100);
 			if(random <= success){
 				Message.sendCenteredMessage(source, ChatColor.GREEN+"----------------------------------------------------");
-				String items = new FancyMessage("                     You added "+Enchantments.getName(enchant)+" to ")
+				String items = new FancyMessage("                     You added "+ enchantclass.getName(enchant)+" to ")
 						.color(ChatColor.YELLOW)
 						.then("this")
 						.color(ChatColor.GOLD)
@@ -501,7 +511,7 @@ public class ItemHandler implements Listener{
 				int randDestroy = new Random().nextInt(100);
 				if(randDestroy <= destroy){
 					Message.sendCenteredMessage(source, ChatColor.GREEN+"----------------------------------------------------");
-					String items = new FancyMessage("                     You have failed to add "+Enchantments.getName(enchant)+" to ")
+					String items = new FancyMessage("                     You have failed to add "+ enchantclass.getName(enchant)+" to ")
 							.color(ChatColor.YELLOW)
 							.then("this")
 							.color(ChatColor.GOLD)

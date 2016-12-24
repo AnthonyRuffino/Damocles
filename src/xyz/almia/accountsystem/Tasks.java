@@ -30,11 +30,12 @@ import xyz.almia.utils.ConfigManager;
 
 public class Tasks{
 	
-	static Plugin plugin = Cardinal.getPlugin();
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	
 	public Tasks() {}
 	
-	public static int getDefaultDamage(Material material){
+	public int getDefaultDamage(Material material){
 		if(material.equals(Material.DIAMOND_SWORD)){
 			return 7;
 		}
@@ -98,7 +99,7 @@ public class Tasks{
 		return 1;
 	}
 
-	public static int getDefaultWeight(ItemTypes type){
+	public int getDefaultWeight(ItemTypes type){
 		switch(type){
 		case ALL:
 			break;
@@ -122,9 +123,9 @@ public class Tasks{
 		return 0;
 	}
 	
-	public static void addSlotsToItem(){
+	public void addSlotsToItem(){
 		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(Cardinal.getPlugin(), new Runnable() {
+        scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
 
 			@Override
 			public void run() {
@@ -202,7 +203,7 @@ public class Tasks{
 		}.runTaskTimer(plugin, 0, 20);
 		
 		addSlotsToItem();
-		Selection.promoteToKing();
+		new Selection().promoteToKing();
 		
 		new BukkitRunnable(){
 			@Override
@@ -269,7 +270,7 @@ public class Tasks{
 
 	}
 	
-	public static String getName(Entity entity){
+	public String getName(Entity entity){
 		switch(entity.getType()){
 		case AREA_EFFECT_CLOUD:
 			return ChatColor.GRAY+"AOE Cloud";
@@ -415,7 +416,7 @@ public class Tasks{
 		}
 	}
 	
-	public static Entity getTarget(Player player, int range) {
+	public Entity getTarget(Player player, int range) {
 		ConfigManager.load("blacklist.yml");
 		List<String> blacklist = ConfigManager.get("blacklist.yml").getStringList("list");
 		List<Material> materials = new ArrayList<Material>();

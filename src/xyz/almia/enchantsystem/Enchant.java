@@ -14,7 +14,8 @@ import xyz.almia.cardinalsystem.Cardinal;
 
 public class Enchant implements Listener{
 	
-	public static Plugin plugin = Cardinal.getPlugin();
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	
 	/*
 	 *    TODO LIST:

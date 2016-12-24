@@ -6,113 +6,116 @@ import xyz.almia.cardinalsystem.Cardinal;
 
 public class CombatExp {
 	
-	static Plugin plugin = Cardinal.getPlugin();
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	
-	public static int ZOMBIE(){
+	public CombatExp() {}
+	
+	public int ZOMBIE(){
 		return plugin.getConfig().getInt("Cardinal.enchant.ZOMBIE");
 	}
 	
-	public static int CAVE_SPIDER(){
+	public int CAVE_SPIDER(){
 		return plugin.getConfig().getInt("Cardinal.enchant.CAVE_SPIDER");
 	}
 	
-	public static int MUSHROOM_COW(){
+	public int MUSHROOM_COW(){
 		return plugin.getConfig().getInt("Cardinal.enchant.MUSHROOM_COW");
 	}
 	
-	public static int ENDERMAN(){
+	public int ENDERMAN(){
 		return plugin.getConfig().getInt("Cardinal.enchant.ENDERMAN");
 	}
 	
-	public static int BLAZE(){
+	public int BLAZE(){
 		return plugin.getConfig().getInt("Cardinal.enchant.BLAZE");
 	}
 	
-	public static int CREEPER(){
+	public int CREEPER(){
 		return plugin.getConfig().getInt("Cardinal.enchant.CREEPER");
 	}
 	
-	public static int ENDERMITE(){
+	public int ENDERMITE(){
 		return plugin.getConfig().getInt("Cardinal.enchant.ENDERMITE");
 	}
 	
-	public static int GHAST(){
+	public int GHAST(){
 		return plugin.getConfig().getInt("Cardinal.enchant.GHAST");
 	}
 	
-	public static int GIANT(){
+	public int GIANT(){
 		return plugin.getConfig().getInt("Cardinal.enchant.GIANT");
 	}
 	
-	public static int GUARDIAN(){
+	public int GUARDIAN(){
 		return plugin.getConfig().getInt("Cardinal.enchant.GUARDIAN");
 	}
 	
-	public static int IRON_GOLEM(){
+	public int IRON_GOLEM(){
 		return plugin.getConfig().getInt("Cardinal.enchant.IRON_GOLEM");
 	}
 	
-	public static int MAGMA_CUBE(){
+	public int MAGMA_CUBE(){
 		return plugin.getConfig().getInt("Cardinal.enchant.MAGMA_CUBE");
 	}
 	
-	public static int PIG_ZOMBIE(){
+	public int PIG_ZOMBIE(){
 		return plugin.getConfig().getInt("Cardinal.enchant.PIG_ZOMBIE");
 	}
 	
-	public static int SILVERFISH(){
+	public int SILVERFISH(){
 		return plugin.getConfig().getInt("Cardinal.enchant.SILVERFISH");
 	}
 	
-	public static int SKELETON(){
+	public int SKELETON(){
 		return plugin.getConfig().getInt("Cardinal.enchant.SKELETON");
 	}
 	
-	public static int SLIME(){
+	public int SLIME(){
 		return plugin.getConfig().getInt("Cardinal.enchant.SLIME");
 	}
 	
-	public static int SPIDER(){
+	public int SPIDER(){
 		return plugin.getConfig().getInt("Cardinal.enchant.SPIDER");
 	}
 	
-	public static int SQUID(){
+	public int SQUID(){
 		return plugin.getConfig().getInt("Cardinal.enchant.SQUID");
 	}
 	
-	public static int WITCH(){
+	public int WITCH(){
 		return plugin.getConfig().getInt("Cardinal.enchant.WITCH");
 	}
 	
-	public static int PIG(){
+	public int PIG(){
 		return plugin.getConfig().getInt("Cardinal.enchant.PIG");
 	}
 	
-	public static int COW(){
+	public int COW(){
 		return plugin.getConfig().getInt("Cardinal.enchant.COW");
 	}
 	
-	public static int CHICKEN(){
+	public int CHICKEN(){
 		return plugin.getConfig().getInt("Cardinal.enchant.CHICKEN");
 	}
 	
-	public static int BAT(){
+	public int BAT(){
 		return plugin.getConfig().getInt("Cardinal.enchant.BAT");
 	}
 	
-	public static int HORSE(){
+	public int HORSE(){
 		return plugin.getConfig().getInt("Cardinal.enchant.HORSE");
 	}
 	
-	public static int PLAYER(){
+	public int PLAYER(){
 		return plugin.getConfig().getInt("Cardinal.enchant.PLAYER");
 	}
 	
-	public static int SHEEP(){
+	public int SHEEP(){
 		return plugin.getConfig().getInt("Cardinal.enchant.SHEEP");
 	}
 	
-	public static int RABBIT(){
+	public int RABBIT(){
 		return plugin.getConfig().getInt("Cardinal.enchant.RABBIT");
 	}
 	

@@ -13,7 +13,8 @@ import xyz.almia.utils.LocationSerializer;
 
 public class Character {
 	
-	static Plugin plugin = Cardinal.getPlugin();
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	private Player player;
 	int characterID = 0;
 	FileConfiguration config;
@@ -55,7 +56,6 @@ public class Character {
 		config.set("regening", state);
 		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
 	}
-	
 	
 	public void addPExp(Profession prof, int value){
 		setPExp(prof, getPExp(prof)+value);

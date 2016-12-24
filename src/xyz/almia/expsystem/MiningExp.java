@@ -5,29 +5,30 @@ import xyz.almia.cardinalsystem.Cardinal;
 
 public class MiningExp {
 	
-	static Plugin plugin = Cardinal.getPlugin();
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	
-	public static int iron(){
+	public int iron(){
 		return plugin.getConfig().getInt("Cardinal.professions.mining.iron");
 	}
 	
-	public static int coal(){
+	public int coal(){
 		return plugin.getConfig().getInt("Cardinal.professions.mining.coal");
 	}
 	
-	public static int gold(){
+	public int gold(){
 		return plugin.getConfig().getInt("Cardinal.professions.mining.gold");
 	}
 	
-	public static int diamond(){
+	public int diamond(){
 		return plugin.getConfig().getInt("Cardinal.professions.mining.diamond");
 	}
 	
-	public static int emerald(){
+	public int emerald(){
 		return plugin.getConfig().getInt("Cardinal.professions.mining.emerald");
 	}
 	
-	public static int stone(){
+	public int stone(){
 		return plugin.getConfig().getInt("Cardinal.professions.mining.stone");
 	}
 	

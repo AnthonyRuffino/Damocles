@@ -14,12 +14,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.utils.ConfigManager;
 
 public class DarkMagic implements Listener{
+	
+	private static Cardinal cardinal = new Cardinal();
+	static Plugin plugin = cardinal.getPlugin();
 	
 	public static void darkMagic(){
 		new BukkitRunnable(){
@@ -45,7 +49,7 @@ public class DarkMagic implements Listener{
 				        				Location newLoc = p.getLocation();
 				        					//newLoc.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, newLoc, 1);
 				        			}
-				        		}.runTaskTimer(Cardinal.getPlugin(), 0, 20);
+				        		}.runTaskTimer(plugin, 0, 20);
 						
 						
 						
@@ -55,7 +59,7 @@ public class DarkMagic implements Listener{
 				
 			}
 			
-		}.runTaskTimer(Cardinal.getPlugin(), 0, 1);
+		}.runTaskTimer(plugin, 0, 1);
 		
 	}
 	

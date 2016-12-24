@@ -22,9 +22,9 @@ import xyz.almia.utils.Swears;
 
 public class PlayerSetup implements Listener{
 	
-	public static Plugin getPlugin(){
-		return Cardinal.getPlugin();
-	}
+	
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	
 	public PlayerSetup(){}
 	
@@ -101,7 +101,7 @@ public class PlayerSetup implements Listener{
 	}
 	
 	public List<Character> getCharacters(){
-		List<String> serchars = getPlugin().getConfig().getStringList("players");
+		List<String> serchars = plugin.getConfig().getStringList("players");
 		List<Character> chars = new ArrayList<Character>();
 		for(String s : serchars){
 			chars.add(deserializeCharacter(s));

@@ -1,7 +1,6 @@
 package xyz.almia.professionssystem;
 
 import java.util.Random;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
-
 import xyz.almia.accountsystem.Account;
 import xyz.almia.accountsystem.Profession;
 import xyz.almia.cardinalsystem.Cardinal;
@@ -27,7 +25,9 @@ public class Mining implements Listener{
 	 *    - Added dropAmount/bonus' depending on level.
 	 */
 	
-	static Plugin plugin = Cardinal.getPlugin();
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
+	MiningExp miningexp = new MiningExp();
 	
 	@EventHandler
 	public void onPlayerOrePlace(BlockPlaceEvent event){
@@ -52,7 +52,7 @@ public class Mining implements Listener{
 		if(!(b.hasMetadata("natural"))){
 			Player p = event.getPlayer();
 			if(event.getBlock().getType().equals(Material.STONE)){
-				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, MiningExp.stone());
+				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, miningexp.stone());
 			}
 			
 			if(event.getBlock().getType().equals(Material.DIAMOND_ORE)){
@@ -63,7 +63,7 @@ public class Mining implements Listener{
 				im.setDisplayName(ChatColor.WHITE + "Diamond Ore");
 				i.setItemMeta(im);
 				p.getWorld().dropItemNaturally(event.getBlock().getLocation(), i);
-				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, MiningExp.diamond());
+				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, miningexp.diamond());
 			}
 			
 			if(event.getBlock().getType().equals(Material.IRON_ORE)){
@@ -74,7 +74,7 @@ public class Mining implements Listener{
 				im.setDisplayName(ChatColor.WHITE + "Steel Ore");
 				i.setItemMeta(im);
 				p.getWorld().dropItemNaturally(event.getBlock().getLocation(), i);
-				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, MiningExp.iron());
+				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, miningexp.iron());
 			}
 			
 			if(event.getBlock().getType().equals(Material.EMERALD_ORE)){
@@ -85,7 +85,7 @@ public class Mining implements Listener{
 				im.setDisplayName(ChatColor.WHITE + "Crystal Ore");
 				i.setItemMeta(im);
 				p.getWorld().dropItemNaturally(event.getBlock().getLocation(), i);
-				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, MiningExp.emerald());
+				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, miningexp.emerald());
 			}
 			
 			if(event.getBlock().getType().equals(Material.COAL_ORE)){
@@ -96,7 +96,7 @@ public class Mining implements Listener{
 				im.setDisplayName(ChatColor.WHITE + "Coal Ore");
 				i.setItemMeta(im);
 				p.getWorld().dropItemNaturally(event.getBlock().getLocation(), i);
-				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, MiningExp.coal());
+				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, miningexp.coal());
 			}
 			
 			if(event.getBlock().getType().equals(Material.GOLD_ORE)){
@@ -107,7 +107,7 @@ public class Mining implements Listener{
 				im.setDisplayName(ChatColor.WHITE + "Gold Ore");
 				i.setItemMeta(im);
 				p.getWorld().dropItemNaturally(event.getBlock().getLocation(), i);
-				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, MiningExp.gold());
+				new Account(p).getLoadedCharacter().addPExp(Profession.MINING, miningexp.gold());
 			}
 		}else{
 			

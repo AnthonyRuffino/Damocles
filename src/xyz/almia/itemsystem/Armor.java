@@ -8,10 +8,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
+import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.utils.RomanNumerals;
 
 public class Armor {
+	
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
+	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
 	
 	private ItemStack item;
 	
@@ -27,7 +33,7 @@ public class Armor {
 		
 		if(!(enchants == null)){
 			for(Map.Entry<Enchantments, Integer> entry : enchants.entrySet()){
-				lore.add(ChatColor.GRAY+ Enchantments.getName(entry.getKey()) + " " + RomanNumerals.intToRoman(entry.getValue()));
+				lore.add(ChatColor.GRAY+ enchantclass.getName(entry.getKey()) + " " + RomanNumerals.intToRoman(entry.getValue()));
 			}
 		}
 		lore.add(ChatColor.GOLD+""+slots+" Slots");
@@ -399,10 +405,10 @@ public class Armor {
 				for(String s : lore){
 					for(Enchantments enchant : Enchantments.values()){
 						String enchantString = ChatColor.stripColor(s);
-						if(enchantString.contains(Enchantments.getName(enchant))){
+						if(enchantString.contains(enchantclass.getName(enchant))){
 							String[] enchantAndDamage = null;
 							enchantAndDamage = s.split(" ");
-							int value = Enchantments.getValue(enchant);
+							int value = enchantclass.getValue(enchant);
 							
 							int level = RomanNumerals.romanToInt(enchantAndDamage[value]);
 							

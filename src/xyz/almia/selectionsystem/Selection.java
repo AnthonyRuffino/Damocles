@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import mkremins.fanciful.FancyMessage;
@@ -17,8 +18,10 @@ import xyz.almia.utils.Message;
 
 public class Selection implements Listener{
 	
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	
-	public static void promoteToKing(){
+	public void promoteToKing(){
 		new BukkitRunnable(){
 			public void run(){
 				
@@ -91,7 +94,7 @@ public class Selection implements Listener{
 				}
 				
 			}
-		}.runTaskTimer(Cardinal.getPlugin(), 0, 20);
+		}.runTaskTimer(plugin, 0, 20);
 	}
 	
 }

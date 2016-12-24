@@ -13,23 +13,26 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
 import xyz.almia.accountsystem.Account;
 import xyz.almia.accountsystem.Profession;
+import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.expsystem.CookingExp;
 import xyz.almia.expsystem.SmeltingExp;
 import xyz.almia.menu.MenuItem;
 
 public class Smelting implements Listener{
 	
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
+	CookingExp cookingexp = new CookingExp();
+	SmeltingExp smeltingexp = new SmeltingExp();
+	
 	ItemStack c = MenuItem.createItem(ChatColor.AQUA + "Coal", ChatColor.GRAY + "Click to turn all Coal Ore into Bars.", Material.COAL);
-	
 	ItemStack i = MenuItem.createItem(ChatColor.AQUA + "Steel", ChatColor.GRAY + "Click to turn all Steel Ore into Bars.", Material.IRON_INGOT);
-	
 	ItemStack g = MenuItem.createItem(ChatColor.AQUA + "Gold", ChatColor.GRAY + "Click to turn all Gold Ore into Bars.", Material.GOLD_INGOT);
-	
 	ItemStack d = MenuItem.createItem(ChatColor.AQUA + "Diamond", ChatColor.GRAY + "Click to turn all Diamond Ore into Diamond.", Material.DIAMOND);
-	
 	ItemStack e = MenuItem.createItem(ChatColor.AQUA + "Magic Crystal", ChatColor.GRAY + "Click to turn all Magic Crystal Ore into Magic Crystal.", Material.EMERALD);
 	
 	ItemStack bacon = MenuItem.createItem(ChatColor.AQUA + "Bacon", ChatColor.GRAY +  "+8 Hunger", Material.GRILLED_PORK);
@@ -116,12 +119,12 @@ public class Smelting implements Listener{
 								if(i.getAmount() == 1){
 									player1.getInventory().remove(i);
 									player1.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 1));
-									new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.bacon());
+									new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.bacon());
 								}
 								if(i.getAmount() > 1){
 									i.setAmount(i.getAmount() - 1);
 									player1.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 1));
-									new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.bacon());
+									new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.bacon());
 								}
 							}
 						}
@@ -135,12 +138,12 @@ public class Smelting implements Listener{
 									if(i.getAmount() == 1){
 										player1.getInventory().remove(i);
 										player1.getInventory().addItem(new ItemStack(Material.BAKED_POTATO, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.potato());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.potato());
 									}
 									if(i.getAmount() > 1){
 										i.setAmount(i.getAmount() - 1);
 										player1.getInventory().addItem(new ItemStack(Material.BAKED_POTATO, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.potato());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.potato());
 									}
 								}
 							}
@@ -160,12 +163,12 @@ public class Smelting implements Listener{
 									if(i.getAmount() == 1){
 										player1.getInventory().remove(i);
 										player1.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.steak());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.steak());
 									}
 									if(i.getAmount() > 1){
 										i.setAmount(i.getAmount() - 1);
 										player1.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.steak());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.steak());
 									}
 								}
 							}
@@ -182,12 +185,12 @@ public class Smelting implements Listener{
 									if(i.getAmount() == 1){
 										player1.getInventory().remove(i);
 										player1.getInventory().addItem(new ItemStack(Material.COOKED_RABBIT, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.rabbit());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.rabbit());
 									}
 									if(i.getAmount() > 1){
 										i.setAmount(i.getAmount() - 1);
 										player1.getInventory().addItem(new ItemStack(Material.COOKED_RABBIT, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.rabbit());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.rabbit());
 									}
 								}
 							}
@@ -204,12 +207,12 @@ public class Smelting implements Listener{
 									if(i.getAmount() == 1){
 										player1.getInventory().remove(i);
 										player1.getInventory().addItem(new ItemStack(Material.COOKED_FISH, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.trout());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.trout());
 									}
 									if(i.getAmount() > 1){
 										i.setAmount(i.getAmount() - 1);
 										player1.getInventory().addItem(new ItemStack(Material.COOKED_FISH, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.trout());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.trout());
 									}
 								}
 							}
@@ -226,12 +229,12 @@ public class Smelting implements Listener{
 									if(i.getAmount() == 1){
 										player1.getInventory().remove(i);
 										player1.getInventory().addItem(new ItemStack(Material.COOKED_MUTTON, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.mutton());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.mutton());
 									}
 									if(i.getAmount() > 1){
 										i.setAmount(i.getAmount() - 1);
 										player1.getInventory().addItem(new ItemStack(Material.COOKED_MUTTON, 1));
-										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, CookingExp.mutton());
+										new Account(player1).getLoadedCharacter().addPExp(Profession.COOKING, cookingexp.mutton());
 									}
 								}
 							}
@@ -301,7 +304,7 @@ public class Smelting implements Listener{
 						
 						b.setItemMeta(bm);
 						event.getWhoClicked().getInventory().addItem(b);
-						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, SmeltingExp.coal() * i.getAmount());
+						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, smeltingexp.coal() * i.getAmount());
 					}
 				}
 			}
@@ -348,7 +351,7 @@ public class Smelting implements Listener{
 						
 						b.setItemMeta(bm);
 						event.getWhoClicked().getInventory().addItem(b);
-						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, SmeltingExp.iron() * i.getAmount());
+						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, smeltingexp.iron() * i.getAmount());
 					}
 				}
 			}
@@ -394,7 +397,7 @@ public class Smelting implements Listener{
 						}
 						b.setItemMeta(bm);
 						event.getWhoClicked().getInventory().addItem(b);
-						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, SmeltingExp.gold() * i.getAmount());
+						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, smeltingexp.gold() * i.getAmount());
 					}
 				}
 			}
@@ -440,7 +443,7 @@ public class Smelting implements Listener{
 						}
 						b.setItemMeta(bm);
 						event.getWhoClicked().getInventory().addItem(b);
-						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, SmeltingExp.emerald() * i.getAmount());
+						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, smeltingexp.emerald() * i.getAmount());
 					}
 				}
 			}
@@ -486,7 +489,7 @@ public class Smelting implements Listener{
 						}
 						b.setItemMeta(bm);
 						event.getWhoClicked().getInventory().addItem(b);
-						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, SmeltingExp.diamond() * i.getAmount());
+						new Account(player).getLoadedCharacter().addPExp(Profession.FORGING, smeltingexp.diamond() * i.getAmount());
 					}
 				}
 			}

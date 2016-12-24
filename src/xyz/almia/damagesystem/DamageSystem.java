@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -39,6 +40,9 @@ import xyz.almia.itemsystem.Weapon;
 import xyz.almia.utils.RomanNumerals;
 
 public class DamageSystem implements Listener{
+	
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	
 	public int getArmorValue(Player player){
 		int armor = 0;
@@ -351,7 +355,7 @@ public class DamageSystem implements Listener{
 											}
 										}
 										
-									}.runTaskTimer(Cardinal.getPlugin(), 0, 20);
+									}.runTaskTimer(plugin, 0, 20);
 									player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, (level * 60)/2, 1, true));
 									return;
 								}
@@ -428,7 +432,7 @@ public class DamageSystem implements Listener{
 										public void run() {
 											petrified.remove(player.getUniqueId());
 										}
-									}.runTaskLater(Cardinal.getPlugin(), 30);
+									}.runTaskLater(plugin, 30);
 									
 									
 								}
@@ -563,7 +567,7 @@ public class DamageSystem implements Listener{
 										public void run() {
 											player.damage(finalDamage, attacker);
 										}
-									}.runTaskLater(Cardinal.getPlugin(), 20);
+									}.runTaskLater(plugin, 20);
 								}
 							}
 							
@@ -746,7 +750,7 @@ public class DamageSystem implements Listener{
 		if(player == null){
 			return;
 		}
-		new Account(player).getLoadedCharacter().addExp(Cardinal.getPlugin().getConfig().getInt("Cardinal.enchant."+event.getEntityType().toString().toUpperCase()));
+		new Account(player).getLoadedCharacter().addExp(plugin.getConfig().getInt("Cardinal.enchant."+event.getEntityType().toString().toUpperCase()));
 	}
 	
 	@SuppressWarnings("unused")

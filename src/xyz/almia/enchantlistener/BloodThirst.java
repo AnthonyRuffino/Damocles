@@ -19,6 +19,7 @@ import xyz.almia.itemsystem.Weapon;
 import xyz.almia.utils.RomanNumerals;
 
 public class BloodThirst implements Listener{
+	ItemHandler itemhandler = new ItemHandler();
 	
 	@EventHandler
 	public void bloodThirstTrigger(EntityDeathEvent event){
@@ -28,7 +29,7 @@ public class BloodThirst implements Listener{
 				
 				if(player.getInventory().getItemInMainHand() != null){
 					ItemStack item = player.getInventory().getItemInMainHand();
-					if(ItemHandler.getEnchantType(item).equals(EnchantTypes.SWORD)){
+					if(itemhandler.getEnchantType(item).equals(EnchantTypes.SWORD)){
 						Weapon detailItem = new Weapon(item);
 						if(detailItem.getEnchants() != null){
 							List<Enchantments> enchantments = detailItem.getEnchants();

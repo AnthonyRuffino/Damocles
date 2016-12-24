@@ -8,6 +8,8 @@ commands:
     description: creates detailed items.
   add:
     description: creates detailed items.
+  heal:
+    description: heal the player.
   rank:
     description: master rank command.
   clan:

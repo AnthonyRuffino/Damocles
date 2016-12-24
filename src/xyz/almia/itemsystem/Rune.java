@@ -11,13 +11,21 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
+import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.utils.Data;
 import xyz.almia.utils.RomanNumerals;
 
 public class Rune implements Listener{
 	
-	public static ItemStack setAmount(ItemStack item, int amount){
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
+	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	
+	public Rune(){}
+	
+	public ItemStack setAmount(ItemStack item, int amount){
 		if(amount == 0){
 			return new ItemStack(Material.AIR, 1);
 		}else{
@@ -26,7 +34,7 @@ public class Rune implements Listener{
 		}
 	}
 	
-	public static ItemStack createSlotRune(int slots){
+	public ItemStack createSlotRune(int slots){
 		ItemStack rune = new ItemStack(Material.EYE_OF_ENDER, 1);
 		ItemMeta runeMeta = rune.getItemMeta();
 		String name = ChatColor.YELLOW + "Slot Rune";
@@ -39,7 +47,7 @@ public class Rune implements Listener{
 		return rune;
 	}
 	
-	public static int getSlotsFromRune(ItemStack item){
+	public int getSlotsFromRune(ItemStack item){
 		if(item.hasItemMeta()){
 			ItemMeta runeMeta = item.getItemMeta();
 			String amount = Data.decodeItemData(runeMeta.getDisplayName());
@@ -48,22 +56,22 @@ public class Rune implements Listener{
 		return -1;
 	}
 	
-	public static ItemStack createRune(Enchantments enchant, int level, int success, int destroy){
+	public ItemStack createRune(Enchantments enchant, int level, int success, int destroy){
 		ItemStack rune = new ItemStack(Material.NETHER_STAR, 1);
 		ItemMeta runeMeta = rune.getItemMeta();
-		String name = ChatColor.YELLOW + "Rune of " + ChatColor.UNDERLINE + Enchantments.getName(enchant) + ChatColor.RESET + " " + ChatColor.YELLOW + RomanNumerals.intToRoman(level);
+		String name = ChatColor.YELLOW + "Rune of " + ChatColor.UNDERLINE + enchantclass.getName(enchant) + ChatColor.RESET + " " + ChatColor.YELLOW + RomanNumerals.intToRoman(level);
 		String enchantment = Data.encodeItemData(enchant.toString() + "'" + level + "'" + success + "'" + destroy);
 		runeMeta.setDisplayName(name + enchantment);
 		runeMeta.setLore(Arrays.asList(new String[] { ChatColor.GREEN + "" + success + "% Success Rate",
 				ChatColor.RED + "" + destroy + "% Destroy Rate On Fail.",
 				ChatColor.YELLOW + "Level " + ChatColor.GOLD + "" + level,
-				ChatColor.GOLD + "" + Enchantments.getType(enchant).toString() + " Enchantment",
+				ChatColor.GOLD + "" + enchantclass.getType(enchant).toString() + " Enchantment",
 				ChatColor.GRAY + "Place rune on item to enchant."}));
 		rune.setItemMeta(runeMeta);
 		return rune;
 	}
 	
-	public static Map<String, Integer> getRune(ItemStack rune){
+	public Map<String, Integer> getRune(ItemStack rune){
 		Map<String, Integer> value = new HashMap<String, Integer>();
 		if(rune.hasItemMeta()){
 			ItemMeta runeMeta = rune.getItemMeta();
@@ -81,7 +89,7 @@ public class Rune implements Listener{
 		return value;
 	}
 	
-	public static boolean isRune(ItemStack rune){
+	public boolean isRune(ItemStack rune){
 		if(rune.hasItemMeta()){
 			if(rune.getType().equals(Material.NETHER_STAR)){
 				return true;
@@ -105,7 +113,7 @@ public class Rune implements Listener{
 		}
 	}
 	
-	public static ItemStack createProtectionRune(){
+	public ItemStack createProtectionRune(){
 		ItemStack rune = new ItemStack(Material.EMPTY_MAP, 1);
 		ItemMeta runeMeta = rune.getItemMeta();
 		String name = ChatColor.YELLOW + "Protection Rune";
@@ -120,7 +128,7 @@ public class Rune implements Listener{
 		return rune;
 	}
 	
-	public static boolean isProtectionRune(ItemStack rune){
+	public boolean isProtectionRune(ItemStack rune){
 		if(rune.hasItemMeta()){
 			ItemMeta runeMeta = rune.getItemMeta();
 			if(runeMeta.getDisplayName().contains(ChatColor.YELLOW + "Protection Rune")){

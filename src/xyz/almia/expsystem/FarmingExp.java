@@ -5,29 +5,32 @@ import xyz.almia.cardinalsystem.Cardinal;
 
 public class FarmingExp {
 	
-	static Plugin plugin = Cardinal.getPlugin();
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
 	
-	public static int sugarCane(){
+	public FarmingExp() {}
+	
+	public int sugarCane(){
 		return plugin.getConfig().getInt("Cardinal.professions.farming.sugarcane");
 	}
 	
-	public static int wheat(){
+	public int wheat(){
 		return plugin.getConfig().getInt("Cardinal.professions.farming.wheat");
 	}
 	
-	public static int carrot(){
+	public int carrot(){
 		return plugin.getConfig().getInt("Cardinal.professions.farming.carrot");
 	}
 	
-	public static int potato(){
+	public int potato(){
 		return plugin.getConfig().getInt("Cardinal.professions.farming.potato");
 	}
 	
-	public static int pumpkin(){
+	public int pumpkin(){
 		return plugin.getConfig().getInt("Cardinal.professions.farming.pumpkin");
 	}
 	
-	public static int melon(){
+	public int melon(){
 		return plugin.getConfig().getInt("Cardinal.professions.farming.melon");
 	}
 	

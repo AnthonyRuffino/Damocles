@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -17,9 +18,15 @@ import xyz.almia.itemsystem.ItemHandler;
 
 public class Eyepatch {
 	
-	public static void checkForEyepatchEnchant(){
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
+	ItemHandler itemhandler = new ItemHandler();
+	
+	public Eyepatch() {}
+	
+	public void checkForEyepatchEnchant(){
 		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(Cardinal.getPlugin(), new Runnable() {
+        scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
 
 			@Override
 			public void run() {
@@ -27,7 +34,7 @@ public class Eyepatch {
 				for(Player player : Bukkit.getOnlinePlayers()){
 					if(player.getInventory().getHelmet() != null){
 						ItemStack item = player.getInventory().getHelmet();
-						if(ItemHandler.getEnchantType(item).equals(EnchantTypes.HELMET)){
+						if(itemhandler.getEnchantType(item).equals(EnchantTypes.HELMET)){
 							Armor detailItem = new Armor(item);
 							if(detailItem.getEnchants() != null){
 								List<Enchantments> enchantments = detailItem.getEnchants();

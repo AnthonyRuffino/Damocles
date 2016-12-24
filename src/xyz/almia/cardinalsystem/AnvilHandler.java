@@ -46,6 +46,7 @@ public class AnvilHandler implements Listener{
 					player.closeInventory();
 					if(player.getInventory().getItemInMainHand() != null){
 						if(ItemHandler.getType(player.getInventory().getItemInMainHand()).equals(ItemTypes.WEAPON)){
+							
 							Weapon weapon = new Weapon(player.getInventory().getItemInMainHand());
 							if(weapon.getDurability() < weapon.getMaxDurability()){
 								Inventory inventory = createAnvil(weapon, player);

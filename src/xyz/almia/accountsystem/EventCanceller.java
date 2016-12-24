@@ -1,7 +1,6 @@
 package xyz.almia.accountsystem;
 
 import java.util.Random;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,7 +21,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
+import org.bukkit.plugin.Plugin;
 import net.milkbowl.vault.economy.EconomyResponse;
 import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.itemsystem.Enchantments;
@@ -30,6 +29,11 @@ import xyz.almia.itemsystem.Rune;
 import xyz.almia.utils.Message;
 
 public class EventCanceller implements Listener{
+	
+	private Cardinal cardinal = new Cardinal();
+	Plugin plugin = cardinal.getPlugin();
+	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	Rune rune = new Rune();
 	
 	@EventHandler
 	public void respawnEvent(PlayerRespawnEvent event){
@@ -67,10 +71,10 @@ public class EventCanceller implements Listener{
 				}else{
 					Enchantments[] enchants = Enchantments.values();
 					Enchantments ench = enchants[new Random().nextInt(enchants.length - 1)];
-					int level = new Random().nextInt(Enchantments.getMaxLevel(ench));
+					int level = new Random().nextInt(enchantclass.getMaxLevel(ench));
 					if(level == 0)
 						level = 1;
-					event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), Rune.createRune(ench, level, new Random().nextInt(100), new Random().nextInt(100)));
+					event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), rune.createRune(ench, level, new Random().nextInt(100), new Random().nextInt(100)));
 					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 					Message.sendCenteredMessage(player, ChatColor.BOLD + "Rune");
 					Message.sendCenteredMessage(player, ChatColor.YELLOW + "You successefuly harvest some runes.");
@@ -104,10 +108,10 @@ public class EventCanceller implements Listener{
 			}else{
 				Enchantments[] enchants = Enchantments.values();
 				Enchantments ench = enchants[new Random().nextInt(enchants.length - 1)];
-				int level = new Random().nextInt(Enchantments.getMaxLevel(ench) + 1);
+				int level = new Random().nextInt(enchantclass.getMaxLevel(ench) + 1);
 				if(level == 0)
 					level = 1;
-				event.getRightClicked().getWorld().dropItem(event.getRightClicked().getLocation(), Rune.createRune(ench, level, new Random().nextInt(100), new Random().nextInt(100)));
+				event.getRightClicked().getWorld().dropItem(event.getRightClicked().getLocation(), rune.createRune(ench, level, new Random().nextInt(100), new Random().nextInt(100)));
 				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 				Message.sendCenteredMessage(player, ChatColor.BOLD + "Rune");
 				Message.sendCenteredMessage(player, ChatColor.YELLOW + "You successefuly harvest some runes.");
