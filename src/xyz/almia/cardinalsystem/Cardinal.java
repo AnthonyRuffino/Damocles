@@ -57,7 +57,7 @@ import xyz.almia.utils.Message;
 
 public class Cardinal extends JavaPlugin implements Listener{
 	
-    public Economy econ = null;
+    public static Economy econ = null;
 	public BlankEnchant ench = new BlankEnchant(69);
 	public static Plugin plugin;
 	private PlayerSetup playersetup = new PlayerSetup();
@@ -403,6 +403,12 @@ public class Cardinal extends JavaPlugin implements Listener{
 					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 					return true;
 				}
+			}else{
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				Message.sendCenteredMessage(player, ChatColor.BOLD + "Rank");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"Only GameMasters can use this command!");
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				return true;
 			}
 		}
 		

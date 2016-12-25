@@ -1,6 +1,6 @@
 package xyz.almia.accountsystem;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -57,7 +57,7 @@ public class EventCanceller implements Listener{
 				event.setCancelled(true);
 				event.getEntity().remove();
 				Player player = (Player) event.getDamager();
-				int rand = new Random().nextInt(100);
+				int rand = ThreadLocalRandom.current().nextInt(100);
 				if(rand <= 50){
 					World world = event.getEntity().getWorld();
 					Location loc = event.getEntity().getLocation();
@@ -69,11 +69,11 @@ public class EventCanceller implements Listener{
 					return;
 				}else{
 					Enchantments[] enchants = Enchantments.values();
-					Enchantments ench = enchants[new Random().nextInt(enchants.length - 1)];
-					int level = new Random().nextInt(enchantclass.getMaxLevel(ench));
+					Enchantments ench = enchants[ThreadLocalRandom.current().nextInt(enchants.length - 1)];
+					int level = ThreadLocalRandom.current().nextInt(enchantclass.getMaxLevel(ench));
 					if(level == 0)
 						level = 1;
-					event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), rune.createRune(ench, level, new Random().nextInt(100), new Random().nextInt(100)));
+					event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), rune.createRune(ench, level, ThreadLocalRandom.current().nextInt(100), ThreadLocalRandom.current().nextInt(100)));
 					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 					Message.sendCenteredMessage(player, ChatColor.BOLD + "Rune");
 					Message.sendCenteredMessage(player, ChatColor.YELLOW + "You successefuly harvest some runes.");
@@ -94,7 +94,7 @@ public class EventCanceller implements Listener{
 			
 			event.getRightClicked().remove();
 			Player player = event.getPlayer();
-			int rand = new Random().nextInt(100);
+			int rand = ThreadLocalRandom.current().nextInt(100);
 			if(rand <= 50){
 				World world = event.getRightClicked().getWorld();
 				Location loc = event.getRightClicked().getLocation();
@@ -106,11 +106,11 @@ public class EventCanceller implements Listener{
 				return;
 			}else{
 				Enchantments[] enchants = Enchantments.values();
-				Enchantments ench = enchants[new Random().nextInt(enchants.length - 1)];
-				int level = new Random().nextInt(enchantclass.getMaxLevel(ench) + 1);
+				Enchantments ench = enchants[ThreadLocalRandom.current().nextInt(enchants.length - 1)];
+				int level = ThreadLocalRandom.current().nextInt(enchantclass.getMaxLevel(ench) + 1);
 				if(level == 0)
 					level = 1;
-				event.getRightClicked().getWorld().dropItem(event.getRightClicked().getLocation(), rune.createRune(ench, level, new Random().nextInt(100), new Random().nextInt(100)));
+				event.getRightClicked().getWorld().dropItem(event.getRightClicked().getLocation(), rune.createRune(ench, level, ThreadLocalRandom.current().nextInt(100), ThreadLocalRandom.current().nextInt(100)));
 				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 				Message.sendCenteredMessage(player, ChatColor.BOLD + "Rune");
 				Message.sendCenteredMessage(player, ChatColor.YELLOW + "You successefuly harvest some runes.");
@@ -123,12 +123,12 @@ public class EventCanceller implements Listener{
 	
 	@EventHandler
 	public void deathEvent(EntityDeathEvent event){
-		if(new Random().nextInt(100) <= 10){
+		if(ThreadLocalRandom.current().nextInt(100) <= 10){
 			event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.ENDER_CRYSTAL);
 		}
 		event.setDroppedExp(0);
 		if(event.getEntity() instanceof Creature){
-			event.getDrops().add(createMoney(new Random().nextInt(12)));
+			event.getDrops().add(createMoney(ThreadLocalRandom.current().nextInt(12)));
 			return;
 		}
 		return;
@@ -142,7 +142,7 @@ public class EventCanceller implements Listener{
 					String name = event.getItem().getItemStack().getItemMeta().getDisplayName();
 					name = name.replace("$", "");
 					try{
-						EconomyResponse r = new Cardinal().econ.depositPlayer(event.getPlayer(), Integer.valueOf(name));
+						EconomyResponse r = Cardinal.econ.depositPlayer(event.getPlayer(), Integer.valueOf(name));
 			            if(r.transactionSuccess()) {
 			                event.getPlayer().sendMessage(ChatColor.YELLOW+"You have picked up $"+ Integer.valueOf(name)+" Dollars!");
 			                event.setCancelled(true);
