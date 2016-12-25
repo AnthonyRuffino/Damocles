@@ -22,6 +22,7 @@ public class AccountMenu {
 		 */
 		
 		ItemStack emp = MenuItem.createItem("", "", Material.STAINED_GLASS_PANE);
+		ItemStack lo = MenuItem.createItem(ChatColor.RED+"Logout", ChatColor.GRAY + "Click to exit the server.", Material.REDSTONE_BLOCK);
 		
 		Account account = new Account(player);
 		
@@ -161,14 +162,14 @@ public class AccountMenu {
 		
 		
 		inv.setItem(0, emp);
-		inv.setItem(1, emp);
-		inv.setItem(2, charOne);//1
-		inv.setItem(3, emp);
-		inv.setItem(4, charTwo);//2
-		inv.setItem(5, emp);
-		inv.setItem(6, charThree);//3
+		inv.setItem(1, charOne);
+		inv.setItem(2, emp);//1
+		inv.setItem(3, charTwo);
+		inv.setItem(4, emp);//2
+		inv.setItem(5, charThree);
+		inv.setItem(6, emp);//3
 		inv.setItem(7, emp);
-		inv.setItem(8, emp);
+		inv.setItem(8, lo);
 		
 		return inv;
 	}

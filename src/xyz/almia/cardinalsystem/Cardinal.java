@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import mkremins.fanciful.FancyMessage;
 import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
@@ -325,8 +328,41 @@ public class Cardinal extends JavaPlugin implements Listener{
 		Clan clan = new Clan(whatClan);
 		
 		if(cmd.getName().equalsIgnoreCase("logout")){
-			account.getLoadedCharacter().setLastLocation(player.getLocation());
-			account.logout();
+			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+			Message.sendCenteredMessage(player, ChatColor.BOLD + "Account");
+			Message.sendCenteredMessage(player, ChatColor.YELLOW+"Logging out in 5 seconds do not move.");
+			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+			Location loc = player.getLocation();
+			for(int o = 0; o < 15; o++){
+				player.sendMessage("");
+			}
+			new BukkitRunnable(){
+				int i = 5;
+				public void run() {
+					
+					if(!(loc.equals(player.getLocation()))){
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(player, ChatColor.BOLD + "Account");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+"Moved cancelling logout.");
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						this.cancel();
+					}
+					
+					if(!(i == 0)){
+						Message.sendCenteredMessage(player, ChatColor.RED + "" + i +"...");
+						i--;
+					}else{
+						Message.sendCenteredMessage(player, ChatColor.RED + "" + i +"...");
+						account.getLoadedCharacter().setLastLocation(player.getLocation());
+						account.logout();
+						for(int o = 0; o < 15; o++){
+							player.sendMessage("");
+						}
+						this.cancel();
+					}
+				}
+			}.runTaskTimer(getPlugin(), 0, 20);
+			return true;
 		}
 		
 		if(cmd.getName().equalsIgnoreCase("help")){

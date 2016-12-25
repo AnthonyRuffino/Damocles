@@ -139,6 +139,11 @@ public class PlayerSetup implements Listener{
 				
 				if(event.getCurrentItem().hasItemMeta()){
 					
+					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED+"Logout")){
+						player.kickPlayer("You have exited Damocles!");
+						return;
+					}
+					
 					if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Character Slot 1")){
 						account.loadCharacter(0);
 						player.closeInventory();
