@@ -1,4 +1,4 @@
-package xyz.almia.itemsystem;
+package xyz.almia.enchantsystem;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.plugin.Plugin;

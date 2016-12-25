@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import net.minecraft.server.v1_11_R1.NBTTagByte;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
+import xyz.almia.enchantsystem.Enchantments;
 import xyz.almia.utils.ConfigManager;
 
 public class ItemSerializer {

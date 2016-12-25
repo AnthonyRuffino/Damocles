@@ -27,12 +27,15 @@ import net.minecraft.server.v1_11_R1.NBTTagList;
 import net.minecraft.server.v1_11_R1.NBTTagString;
 import xyz.almia.accountsystem.Account;
 import xyz.almia.cardinalsystem.Cardinal;
+import xyz.almia.enchantsystem.EnchantTypes;
+import xyz.almia.enchantsystem.Enchantments;
+import xyz.almia.enchantsystem.Rune;
 import xyz.almia.utils.Message;
 
 public class ItemHandler implements Listener{
 	
 	Plugin plugin = Cardinal.getPlugin();
-	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	xyz.almia.enchantsystem.Enchantment enchantclass = new xyz.almia.enchantsystem.Enchantment();
 	Rune rune = new Rune();
 	
 	public ItemHandler() {}

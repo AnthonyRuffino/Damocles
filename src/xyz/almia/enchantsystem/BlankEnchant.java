@@ -1,4 +1,4 @@
-package xyz.almia.itemsystem;
+package xyz.almia.enchantsystem;
  
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;

@@ -9,9 +9,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import xyz.almia.cardinalsystem.Cardinal;
+import xyz.almia.enchantsystem.EnchantTypes;
+import xyz.almia.enchantsystem.Enchantments;
 import xyz.almia.itemsystem.Armor;
-import xyz.almia.itemsystem.EnchantTypes;
-import xyz.almia.itemsystem.Enchantments;
 import xyz.almia.itemsystem.ItemHandler;
 
 public class BatVision {

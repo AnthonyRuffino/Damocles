@@ -11,12 +11,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import xyz.almia.cardinalsystem.Cardinal;
+import xyz.almia.enchantsystem.Enchantments;
 import xyz.almia.utils.RomanNumerals;
 
 public class Armor {
 	
 	Plugin plugin = Cardinal.getPlugin();
-	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	xyz.almia.enchantsystem.Enchantment enchantclass = new xyz.almia.enchantsystem.Enchantment();
 	
 	private ItemStack item;
 	

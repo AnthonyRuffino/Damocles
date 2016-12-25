@@ -36,15 +36,15 @@ import xyz.almia.enchantlistener.BloodThirst;
 import xyz.almia.enchantlistener.Eyepatch;
 import xyz.almia.enchantlistener.Jump;
 import xyz.almia.enchantlistener.Speed;
+import xyz.almia.enchantsystem.BlankEnchant;
 import xyz.almia.enchantsystem.Enchant;
-import xyz.almia.itemsystem.BlankEnchant;
-import xyz.almia.itemsystem.Enchantments;
+import xyz.almia.enchantsystem.Enchantments;
+import xyz.almia.enchantsystem.Rune;
 import xyz.almia.itemsystem.ItemHandler;
 import xyz.almia.itemsystem.ItemSerializer;
 import xyz.almia.itemsystem.Items;
 import xyz.almia.itemsystem.Potion;
 import xyz.almia.itemsystem.PotionTypes;
-import xyz.almia.itemsystem.Rune;
 import xyz.almia.menu.ClanMenu;
 import xyz.almia.menu.PlayerMenu;
 import xyz.almia.menu.SelectionMenu;
@@ -61,7 +61,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 	public BlankEnchant ench = new BlankEnchant(69);
 	public static Plugin plugin;
 	private PlayerSetup playersetup = new PlayerSetup();
-	private xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	private xyz.almia.enchantsystem.Enchantment enchantclass = new xyz.almia.enchantsystem.Enchantment();
 	private Rune rune = new Rune();
     
     private boolean setupEconomy() {

@@ -24,14 +24,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import net.milkbowl.vault.economy.EconomyResponse;
 import xyz.almia.cardinalsystem.Cardinal;
-import xyz.almia.itemsystem.Enchantments;
-import xyz.almia.itemsystem.Rune;
+import xyz.almia.enchantsystem.Enchantments;
+import xyz.almia.enchantsystem.Rune;
 import xyz.almia.utils.Message;
 
 public class EventCanceller implements Listener{
 	
 	Plugin plugin = Cardinal.getPlugin();
-	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	xyz.almia.enchantsystem.Enchantment enchantclass = new xyz.almia.enchantsystem.Enchantment();
 	Rune rune = new Rune();
 	
 	@EventHandler

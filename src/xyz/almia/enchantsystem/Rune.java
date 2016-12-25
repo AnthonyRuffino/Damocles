@@ -1,4 +1,4 @@
-package xyz.almia.itemsystem;
+package xyz.almia.enchantsystem;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import xyz.almia.utils.RomanNumerals;
 public class Rune implements Listener{
 	
 	Plugin plugin = Cardinal.getPlugin();
-	xyz.almia.itemsystem.Enchantment enchantclass = new xyz.almia.itemsystem.Enchantment();
+	xyz.almia.enchantsystem.Enchantment enchantclass = new xyz.almia.enchantsystem.Enchantment();
 	
 	public Rune(){}
 	

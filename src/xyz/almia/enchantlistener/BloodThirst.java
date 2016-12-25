@@ -12,8 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import xyz.almia.itemsystem.EnchantTypes;
-import xyz.almia.itemsystem.Enchantments;
+
+import xyz.almia.enchantsystem.EnchantTypes;
+import xyz.almia.enchantsystem.Enchantments;
 import xyz.almia.itemsystem.ItemHandler;
 import xyz.almia.itemsystem.Weapon;
 import xyz.almia.utils.RomanNumerals;

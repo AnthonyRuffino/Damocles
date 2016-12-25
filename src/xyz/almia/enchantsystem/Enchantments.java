@@ -1,4 +1,4 @@
-package xyz.almia.itemsystem;
+package xyz.almia.enchantsystem;
 
 public enum Enchantments {
 	
