@@ -396,9 +396,16 @@ public class Cardinal extends JavaPlugin implements Listener{
 			ItemStack item = new ItemStack(Material.POTION);
 			net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 	        NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-	        compound.set("CustomPotionColor", new NBTTagInt(4628544));
+	        compound.set("CustomPotionColor", new NBTTagInt(16446520));
 			nmsStack.setTag(compound);
 			player.getInventory().addItem(CraftItemStack.asBukkitCopy(nmsStack));
+			
+			ItemStack arrow = new ItemStack(Material.TIPPED_ARROW);
+			net.minecraft.server.v1_11_R1.ItemStack nmsStackArrow = CraftItemStack.asNMSCopy(arrow);
+	        NBTTagCompound arrowcompound = (nmsStackArrow.hasTag()) ? nmsStackArrow.getTag() : new NBTTagCompound();
+	        arrowcompound.set("CustomPotionColor", new NBTTagInt(16446520));
+			nmsStackArrow.setTag(arrowcompound);
+			player.getInventory().addItem(CraftItemStack.asBukkitCopy(nmsStackArrow));
 		
 			return true;
 		}

@@ -17,6 +17,10 @@ import xyz.almia.utils.RomanNumerals;
 
 public class Weapon{
 	
+	/*
+	 * @Author Kowagatte
+	 */
+	
 	Plugin plugin = Cardinal.getPlugin();
 	xyz.almia.enchantsystem.Enchantment enchantclass = new xyz.almia.enchantsystem.Enchantment();
 	private ItemStack item;

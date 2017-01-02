@@ -24,6 +24,7 @@ public class Character {
 		ConfigManager.load(player.getUniqueId()+";char;"+characterID+".yml");
 		this.config = ConfigManager.get(player.getUniqueId()+";char;"+characterID+".yml");
 	}
+
 	
 	public Player getPlayer(){
 		return this.player;
