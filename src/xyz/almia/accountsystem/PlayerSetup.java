@@ -175,7 +175,9 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(0);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
-						account.getLoadedCharacter().applyInventory();
+						try{
+							account.getLoadedCharacter().applyInventory();
+						}catch(Exception e) {}
 						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
@@ -190,7 +192,9 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(1);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
-						account.getLoadedCharacter().applyInventory();
+						try{
+							account.getLoadedCharacter().applyInventory();
+						}catch(Exception e) {}
 						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
@@ -205,7 +209,9 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(2);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
-						account.getLoadedCharacter().applyInventory();
+						try{
+							account.getLoadedCharacter().applyInventory();
+						}catch(Exception e) {}
 						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
@@ -333,18 +339,18 @@ public class PlayerSetup implements Listener{
 	@EventHandler
 	public void onPlayersFirstJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
-		if(!(player.hasPlayedBefore())){
+		Account account = new Account(player);
+		try{
+			@SuppressWarnings("unused")
+			AccountStatus status = account.getStatus();
+		}catch(Exception e){
 			new Account(player).firstTimeSetup();
-			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-			Message.sendCenteredMessage(player, ChatColor.BOLD + "Welcome " + player.getName() + "!");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Please choose a character.");
-			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-		}else{
-			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-			Message.sendCenteredMessage(player, ChatColor.BOLD + "Welcome Back " + player.getName() + "!");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Please select a character.");
-			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 		}
+		
+		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+		Message.sendCenteredMessage(player, ChatColor.BOLD + "Welcome " + player.getName() + "!");
+		Message.sendCenteredMessage(player, ChatColor.YELLOW+ "Please choose a character.");
+		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 	}
 	
 	

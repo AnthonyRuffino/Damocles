@@ -1,4 +1,4 @@
-package xyz.almia.itemsystem;
+package xyz.almia.potionsystem;
 
 public enum PotionTypes {
 	HEALING, MANA, NONE;

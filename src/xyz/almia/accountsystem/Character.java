@@ -35,6 +35,15 @@ public class Character {
 		return this.player;
 	}
 	
+	public int getSouls(){
+		return config.getInt("soul");
+	}
+	
+	public void setSouls(int amount){
+		config.set("soul", amount);
+		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
+	}
+	
 	public int getBankBalance(){
 		return config.getInt("money");
 	}
@@ -382,6 +391,7 @@ public class Character {
 		config.set("health", 6);
 		config.set("maxhealth", 6);
 		config.set("money", 0);
+		config.set("soul", 5);
 		config.set("regening", false);
 		config.set("profession.herbalism.level", 1);
 		config.set("profession.herbalism.exp", 0);

@@ -1,4 +1,4 @@
-package xyz.almia.itemsystem;
+package xyz.almia.potionsystem;
 
 import java.util.ArrayList;
 import java.util.List;

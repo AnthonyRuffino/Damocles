@@ -30,6 +30,7 @@ import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.enchantsystem.EnchantTypes;
 import xyz.almia.enchantsystem.Enchantments;
 import xyz.almia.enchantsystem.Rune;
+import xyz.almia.potionsystem.Potion;
 import xyz.almia.utils.Message;
 
 public class ItemHandler implements Listener{
