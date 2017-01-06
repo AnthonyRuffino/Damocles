@@ -17,8 +17,6 @@ commands:
     description: master rank command.
   clan:
     description: clan main command.
-  hat:
-    description: sets item in hand to helmet
   stats:
     description: player stats.
   help:

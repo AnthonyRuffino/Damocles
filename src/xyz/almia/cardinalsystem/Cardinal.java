@@ -354,20 +354,30 @@ public class Cardinal extends JavaPlugin implements Listener{
 		}
 		
 		if(cmd.getName().equalsIgnoreCase("help")){
-			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-			Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
-			Message.sendCenteredMessage(player, " ");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/logout "+ChatColor.GOLD+ ": Logs out of your character.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/balance "+ChatColor.GOLD+ ": Displays users bank balance.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Clan "+ChatColor.GOLD+ ": For all the Clan Commands.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Rune "+ChatColor.GOLD+ ": For all the Enchant Commands.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Stats "+ChatColor.GOLD+ ": For your players Stats.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Rank "+ChatColor.GOLD+ ": For all the Rank Commands.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Guild "+ChatColor.GOLD+ ": Not implemented.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Party "+ChatColor.GOLD+ ": Not implemented.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Trade "+ChatColor.GOLD+ ": Not implemented.");
-			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-			return true;
+			if(character.getRank().equals(Rank.GAMEMASTER)){
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+				Message.sendCenteredMessage(player, " ");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Rank "+ChatColor.GOLD+ ": For all the Rank Commands.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Money "+ChatColor.GOLD+ ": Admin money command.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Cardinal "+ChatColor.GOLD+ ": generates custom weapons.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Rune "+ChatColor.GOLD+ ": For all the Enchant Commands.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Heal <Character>"+ChatColor.GOLD+ ": Heals specified player.");
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+			}else{
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+				Message.sendCenteredMessage(player, " ");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/logout "+ChatColor.GOLD+ ": Logs out of your character.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/balance "+ChatColor.GOLD+ ": Displays users bank balance.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Clan "+ChatColor.GOLD+ ": For all the Clan Commands.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Stats "+ChatColor.GOLD+ ": For your players Stats.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Guild "+ChatColor.GOLD+ ": Not implemented.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Party "+ChatColor.GOLD+ ": Not implemented.");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Trade "+ChatColor.GOLD+ ": Not implemented.");
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				return true;
+			}
 		}
 		
 		if(cmd.getName().equals("balance")){
@@ -537,10 +547,6 @@ public class Cardinal extends JavaPlugin implements Listener{
 				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 				return true;
 			}
-		}
-		
-		if(cmd.getName().equalsIgnoreCase("hat")){
-			player.getInventory().setHelmet(player.getInventory().getItemInMainHand());
 		}
 		
 		if(cmd.getName().equalsIgnoreCase("cardinal")){
