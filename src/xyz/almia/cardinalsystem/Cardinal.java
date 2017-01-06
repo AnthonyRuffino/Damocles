@@ -15,11 +15,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import mkremins.fanciful.FancyMessage;
-import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
 import net.minecraft.server.v1_11_R1.NBTTagInt;
 import xyz.almia.abilities.DarkMagic;
@@ -60,24 +58,11 @@ import xyz.almia.utils.Message;
 
 public class Cardinal extends JavaPlugin implements Listener{
 	
-    public static Economy econ = null;
 	public BlankEnchant ench = new BlankEnchant(69);
 	public static Plugin plugin;
 	private PlayerSetup playersetup = new PlayerSetup();
 	private xyz.almia.enchantsystem.Enchantment enchantclass = new xyz.almia.enchantsystem.Enchantment();
 	private Rune rune = new Rune();
-    
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return econ != null;
-    }
 	
 	public static Plugin getPlugin() {
 		return plugin;
@@ -284,11 +269,6 @@ public class Cardinal extends JavaPlugin implements Listener{
 	}
 
 	public void onEnable(){
-        if (!setupEconomy() ) {
-            System.out.println(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
 		plugin = this;
 		registerConfig();
 		registerEvents();

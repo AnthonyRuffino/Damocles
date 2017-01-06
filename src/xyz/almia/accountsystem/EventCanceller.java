@@ -22,7 +22,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import net.milkbowl.vault.economy.EconomyResponse;
 import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.enchantsystem.Enchantments;
 import xyz.almia.enchantsystem.Rune;
@@ -141,18 +140,10 @@ public class EventCanceller implements Listener{
 				if(event.getItem().getItemStack().getItemMeta().getDisplayName().contains("$")){
 					String name = event.getItem().getItemStack().getItemMeta().getDisplayName();
 					name = name.replace("$", "");
-					try{
-						EconomyResponse r = Cardinal.econ.depositPlayer(event.getPlayer(), Integer.valueOf(name));
-			            if(r.transactionSuccess()) {
-			                event.getPlayer().sendMessage(ChatColor.YELLOW+"You have picked up $"+ Integer.valueOf(name)+" Dollars!");
-			                event.setCancelled(true);
-			                event.getItem().remove();
-			            } else {
-			                event.getPlayer().sendMessage(String.format("An error occured: %s", r.errorMessage));
-			            }
-					}catch(Exception e){
-						e.printStackTrace();
-					}
+					new Account(event.getPlayer()).getLoadedCharacter().deposit(Integer.valueOf(name));
+					event.getPlayer().sendMessage(ChatColor.YELLOW+"You have picked up $"+ Integer.valueOf(name)+" Dollars!");
+		            event.setCancelled(true);
+		            event.getItem().remove();
 				}
 			}
 		}

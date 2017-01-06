@@ -13,33 +13,33 @@ import org.bukkit.inventory.ItemStack;
 import xyz.almia.accountsystem.Account;
 import xyz.almia.accountsystem.Profession;
 import xyz.almia.accountsystem.Stat;
-import xyz.almia.cardinalsystem.Cardinal;
 
 public class PlayerMenu implements Listener{
 	
-	@SuppressWarnings("deprecation")
 	public static Inventory createMenu(Player player){
 		Inventory inv = Bukkit.getServer().createInventory(null, 27, player.getName() + " Stats");
 		
+		xyz.almia.accountsystem.Character character = new Account(player).getLoadedCharacter();
+		
 		ItemStack emp = MenuItem.createItem("Empty", "", Material.STAINED_GLASS_PANE);
 		ItemStack i1 = MenuItem.createBetterItem(ChatColor.DARK_GRAY + "Player Data", Arrays.asList(new String[] {
-				ChatColor.GRAY + "Name: " + player.getName(),
-				ChatColor.GRAY + "Rank: " + new Account(player).getLoadedCharacter().getRank().toString(),
+				ChatColor.GRAY + "Name: " + character.getUsername(),
+				ChatColor.GRAY + "Rank: " + character.getRank().toString(),
 				"",
-				ChatColor.GRAY + "Level: " + new Account(player).getLoadedCharacter().getLevel(),
-				ChatColor.GRAY+ "Exp: "+new Account(player).getLoadedCharacter().getExp()+"/"+(new Account(player).getLoadedCharacter().getLevel() * 1028),
-				ChatColor.GRAY+ "Ability Points: "+new Account(player).getLoadedCharacter().getAbilityPoints(),
+				ChatColor.GRAY + "Level: " + character.getLevel(),
+				ChatColor.GRAY+ "Exp: "+character.getExp()+"/"+(character.getLevel() * 1028),
+				ChatColor.GRAY+ "Ability Points: "+character.getAbilityPoints(),
 				"",
-				ChatColor.GRAY+"Max Health: "+(new Account(player).getLoadedCharacter().getMaxHealth()),
-				ChatColor.GRAY+"Max Mana: "+(new Account(player).getLoadedCharacter().getMaxMana()),
-				ChatColor.GRAY+"Speed: "+new Account(player).getLoadedCharacter().getSpeed(),
-				ChatColor.GRAY+"Base Physical Damage: "+new Account(player).getLoadedCharacter().getPhysicalDamage() ,
-				ChatColor.GRAY+"Base Magic Damage: "+new Account(player).getLoadedCharacter().getMagicalDamage(),
+				ChatColor.GRAY+"Max Health: "+(character.getMaxHealth()),
+				ChatColor.GRAY+"Max Mana: "+(character.getMaxMana()),
+				ChatColor.GRAY+"Speed: "+character.getSpeed(),
+				ChatColor.GRAY+"Base Physical Damage: "+character.getPhysicalDamage() ,
+				ChatColor.GRAY+"Base Magic Damage: "+character.getMagicalDamage(),
 				"",
 				}), Material.END_CRYSTAL);
 		ItemStack prof = MenuItem.createBetterItem(ChatColor.DARK_GRAY + "Professions", Arrays.asList(new String[] { ChatColor.GRAY + "Click to open the Professions menu." }), Material.STONE_PICKAXE);
 		ItemStack skills = MenuItem.createBetterItem(ChatColor.DARK_GRAY + "Skills", Arrays.asList(new String[] { ChatColor.GRAY + "Click to open the Skill menu."}), Material.ENCHANTED_BOOK);
-		ItemStack money = MenuItem.createBetterItem(ChatColor.GREEN+"Balance", Arrays.asList(new String[] { ChatColor.GREEN+"$"+ChatColor.GRAY+""+ Cardinal.econ.getBalance(player.getName()) }), Material.EMERALD);
+		ItemStack money = MenuItem.createBetterItem(ChatColor.GREEN+"Balance", Arrays.asList(new String[] { ChatColor.GREEN+"$"+ChatColor.GRAY+""+ character.getBankBalance() }), Material.EMERALD);
 		ItemStack friends = MenuItem.createBetterItem(ChatColor.RED+"Friends", Arrays.asList(new String[] {  }), Material.RED_ROSE);
 		ItemStack ap = MenuItem.createEvenBetterItem(ChatColor.DARK_GRAY + "Ability Points", Arrays.asList(new String[] {ChatColor.GRAY + "Unallocated Points: " + new Account(player).getLoadedCharacter().getAbilityPoints(), ChatColor.GRAY + "Total Points: " + new Account(player).getLoadedCharacter().getLevel() * 3}), Material.EXP_BOTTLE, new Account(player).getLoadedCharacter().getAbilityPoints());
 		ItemStack clan = MenuItem.createClanTag(player);

@@ -35,6 +35,26 @@ public class Character {
 		return this.player;
 	}
 	
+	public int getBankBalance(){
+		return config.getInt("money");
+	}
+	
+	public void setBankBalance(int i){
+		config.set("money", i);
+		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
+	}
+	
+	public void deposit(int amount){
+		setBankBalance(getBankBalance() + amount);
+	}
+	
+	public boolean withdraw(int amount){
+		if((getBankBalance() - amount) < 0)
+			return false;
+		setBankBalance(getBankBalance() - amount);
+		return true;
+	}
+	
 	public Inventory getSavedInventory(){
 		List<Map<?, ?>> inventories = config.getMapList("inventory");
 		@SuppressWarnings("unchecked")
@@ -361,6 +381,7 @@ public class Character {
 		config.set("ap", 4);
 		config.set("health", 6);
 		config.set("maxhealth", 6);
+		config.set("money", 0);
 		config.set("regening", false);
 		config.set("profession.herbalism.level", 1);
 		config.set("profession.herbalism.exp", 0);
