@@ -357,17 +357,97 @@ public class Cardinal extends JavaPlugin implements Listener{
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
 			Message.sendCenteredMessage(player, " ");
+			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/logout "+ChatColor.GOLD+ ": Logs out of your character.");
+			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/balance "+ChatColor.GOLD+ ": Displays users bank balance.");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Clan "+ChatColor.GOLD+ ": For all the Clan Commands.");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Rune "+ChatColor.GOLD+ ": For all the Enchant Commands.");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Stats "+ChatColor.GOLD+ ": For your players Stats.");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Rank "+ChatColor.GOLD+ ": For all the Rank Commands.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Bounty "+ChatColor.GOLD+": Not implemented.");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Guild "+ChatColor.GOLD+ ": Not implemented.");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Party "+ChatColor.GOLD+ ": Not implemented.");
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Trade "+ChatColor.GOLD+ ": Not implemented.");
-			Message.sendCenteredMessage(player, ChatColor.YELLOW+"/Debug "+ChatColor.GOLD+ ": Not implemented.");
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			return true;
+		}
+		
+		if(cmd.getName().equals("balance")){
+			if(args.length == 0){
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				Message.sendCenteredMessage(player, ChatColor.BOLD + "Balance");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"Your balance is "+ChatColor.GREEN+"$"+character.getBankBalance());
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				return true;
+			}else{
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				Message.sendCenteredMessage(player, ChatColor.BOLD + "Balance");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"Error: Proper usage is /balance");
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				return true;
+			}
+		}
+		
+		if(cmd.getName().equalsIgnoreCase("money")){
+			
+			if(!(character.getRank().equals(Rank.GAMEMASTER))){
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"Must be a GAMEMASTER to use /money");
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				return true;
+			}
+			
+			if(args.length == 0){
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				Message.sendCenteredMessage(player, ChatColor.BOLD + "Money Commands");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"/money set <Player> <Amount>");
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				return true;
+			}else if(args.length == 3){
+				if(args[0].equalsIgnoreCase("set")){
+					try{
+						xyz.almia.accountsystem.Character target = playersetup.getCharacterFromUsername(args[1]);
+						try{
+							int amount = Integer.valueOf(args[2]);
+							
+							target.setBankBalance(amount);
+							Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+							Message.sendCenteredMessage(player, ChatColor.BOLD + "Money");
+							Message.sendCenteredMessage(player, ChatColor.YELLOW+ target.getUsername() + "'s balance has been set to " + args[2]);
+							Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+							Message.sendCenteredMessage(target.getPlayer(), ChatColor.GREEN+"----------------------------------------------------");
+							Message.sendCenteredMessage(target.getPlayer(), ChatColor.BOLD + "Money");
+							Message.sendCenteredMessage(target.getPlayer(), ChatColor.YELLOW+ target.getUsername() + "'s balance has been set to " + args[2]);
+							Message.sendCenteredMessage(target.getPlayer(), ChatColor.GREEN+"----------------------------------------------------");
+							return true;
+							
+						}catch(Exception e){
+							Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+							Message.sendCenteredMessage(player, ChatColor.BOLD + "Money");
+							Message.sendCenteredMessage(player, ChatColor.YELLOW+ args[2] + " is not a number.");
+							Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+							return true;
+						}
+					}catch(Exception e) {
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(player, ChatColor.BOLD + "Money");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+ args[1] + " does not exist or is offline.");
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						return true;
+					}
+				}else{
+					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+					Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+					Message.sendCenteredMessage(player, ChatColor.YELLOW+"Improper command usage, use /money set <Player> <Amount>");
+					Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+					return true;
+				}
+			}else{
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				Message.sendCenteredMessage(player, ChatColor.BOLD + "Help");
+				Message.sendCenteredMessage(player, ChatColor.YELLOW+"Improper command usage, use /money set <Player> <Amount>");
+				Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				return true;
+			}
 		}
 		
 		if(cmd.getName().equalsIgnoreCase("serialize")){

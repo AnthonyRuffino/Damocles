@@ -16,6 +16,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import xyz.almia.accountsystem.Account;
 import xyz.almia.itemsystem.ItemHandler;
 import xyz.almia.itemsystem.ItemTypes;
 import xyz.almia.itemsystem.Weapon;
@@ -89,16 +91,20 @@ public class AnvilHandler implements Listener{
 				if(event.getCurrentItem() == null){
 					return;
 				}else if(event.getCurrentItem().equals(yes)){
+					Player player = (Player)event.getWhoClicked();
+					Account account = new Account(player);
+					xyz.almia.accountsystem.Character character = account.getLoadedCharacter();
+					if(!(character.withdraw(anvil.getCost()))){
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						Message.sendCenteredMessage(player, ChatColor.BOLD + "Anvil");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+ "You cannot afford to repair this weapon.");
+						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+						event.getWhoClicked().closeInventory();
+						anvil.deleteShowItem();
+						return;
+					}
 					anvil.getWeapon().setDurability(anvil.getWeapon().getMaxDurability());
 					anvil.deleteShowItem();
-					/*
-		            EconomyResponse r = new Cardinal().econ.
-		            if(r.transactionSuccess()) {
-		                sender.sendMessage(String.format("You were given %s and now have %s", econ.format(r.amount), econ.format(r.balance)));
-		            } else {
-		                sender.sendMessage(String.format("An error occured: %s", r.errorMessage));
-		            }
-		            */
 					event.getWhoClicked().closeInventory();
 				}else if(event.getCurrentItem().equals(no)){
 					event.getWhoClicked().closeInventory();
@@ -122,7 +128,7 @@ public class AnvilHandler implements Listener{
 	}
 	
 	public Inventory createAnvil(Weapon weapon, Player player){
-		int cost = 0;
+		int cost = (weapon.getMaxDurability() - weapon.getDurability())*3;
 		Inventory inv = Bukkit.createInventory(null, 9, ChatColor.DARK_GRAY+ "Fix "+ ChatColor.GRAY + weapon.getName() + ChatColor.DARK_GRAY + " for " + ChatColor.GREEN + cost + ChatColor.DARK_GRAY + " col?");
 		ItemStack emp = MenuItem.createItem("", "", Material.STAINED_GLASS_PANE);
 		inv.setItem(0, emp);

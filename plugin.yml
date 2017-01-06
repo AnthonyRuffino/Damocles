@@ -2,10 +2,13 @@ name: SevenKings
 version: 3.8
 author: Kowagatte
 main: xyz.almia.cardinalsystem.Cardinal
-depend: [Vault]
 commands:
   cardinal:
     description: creates detailed items.
+  balance:
+    description: shows characters bank balance.
+  money:
+    description: modifies characters bank balance.
   add:
     description: creates detailed items.
   heal:

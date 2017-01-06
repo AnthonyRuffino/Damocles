@@ -61,7 +61,7 @@ public class Anvil{
 	}
 	
 	public int getCost(){
-		return cost;
+		return (weapon.getMaxDurability() - weapon.getDurability())*3;
 	}
 	
 }
