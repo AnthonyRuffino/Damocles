@@ -87,16 +87,30 @@ public class PlayerSetup implements Listener{
 		}
 	}
 	
-	public Character getCharacterFromUsername(String username){
-		if(username.equalsIgnoreCase("UNKNOWN"))
-			return null;
-		List<Character> characters = getCharacters();
-		for(Character character : characters){
-			if(character.getUsername().equalsIgnoreCase(username)){
-				return character;
+	public List<Character> getOnlineCharacters(){
+		List<Character> onlinePlayers = new ArrayList<Character>();
+		for(Player player : Bukkit.getOnlinePlayers()){
+			Account account = new Account(player);
+			try{
+				Character character = account.getLoadedCharacter();
+				onlinePlayers.add(character);
+			} catch(Exception e) {}
+		}
+		return onlinePlayers;
+	}
+	
+	public List<Character> getOfflineCharacters(){
+		List<Character> onlineCharacters = getOnlineCharacters();
+		List<Character> allCharacters = getCharacters();
+		List<Character> offlineCharacters = allCharacters;
+		for(Character character : allCharacters){
+			for(Character chara : onlineCharacters){
+				if(character.equals(chara)){
+					offlineCharacters.remove(chara);
+				}
 			}
 		}
-		return null;
+		return offlineCharacters;
 	}
 	
 	public List<Character> getCharacters(){
@@ -106,6 +120,18 @@ public class PlayerSetup implements Listener{
 			chars.add(deserializeCharacter(s));
 		}
 		return chars;
+	}
+	
+	public Character getCharacterFromUsername(String username){
+		if(username.equalsIgnoreCase("unknown"))
+			return null;
+		List<Character> characters = getOnlineCharacters();
+		for(Character character : characters){
+			if(character.getUsername().equalsIgnoreCase(username)){
+				return character;
+			}
+		}
+		return null;
 	}
 	
 	public List<String> getCharacterNames(){
@@ -119,13 +145,14 @@ public class PlayerSetup implements Listener{
 	
 	public Character deserializeCharacter(String s){
 		String[] args = s.split(";");
-		Player player = Bukkit.getPlayer(UUID.fromString(args[0]));
 		try{
-			Character character = new Character(player, Integer.valueOf(args[2]));
-			return character;
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+			Player player = Bukkit.getPlayer(UUID.fromString(args[0]));
+			try{
+				Character character = new Character(player, Integer.valueOf(args[2]));
+				return character;
+			}catch(Exception e){}
+		} catch (Exception e) {}
+		
 		return null;
 	}
 	
@@ -148,6 +175,7 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(0);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
+						account.getLoadedCharacter().applyInventory();
 						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
@@ -162,6 +190,7 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(1);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
+						account.getLoadedCharacter().applyInventory();
 						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
@@ -176,6 +205,7 @@ public class PlayerSetup implements Listener{
 						account.loadCharacter(2);
 						player.closeInventory();
 						player.teleport(account.getLoadedCharacter().getLastLocation());
+						account.getLoadedCharacter().applyInventory();
 						for(int i=0; i < 16;){
 							player.sendMessage("");
 							i++;
@@ -220,7 +250,6 @@ public class PlayerSetup implements Listener{
 		
 	}
 	
-	
 	public void sendNameSelectionProcess(Player player){
 		for(int i=0; i < 16;){
 			player.sendMessage("");
@@ -234,9 +263,10 @@ public class PlayerSetup implements Listener{
 	
 	@EventHandler
 	public void onLogout(PlayerQuitEvent event){
-		if(new Account(event.getPlayer()).getStatus().equals(AccountStatus.LOGGEDIN)){
-			new Account(event.getPlayer()).getLoadedCharacter().setLastLocation(event.getPlayer().getLocation());
-			new Account(event.getPlayer()).logout();
+		Player player = event.getPlayer();
+		Account account = new Account(player);
+		if(account.getStatus().equals(AccountStatus.LOGGEDIN)){
+			account.logout();
 		}
 	}
 	

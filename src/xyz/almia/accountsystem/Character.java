@@ -1,10 +1,16 @@
 package xyz.almia.accountsystem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.messagesystem.Messages;
@@ -24,10 +30,51 @@ public class Character {
 		ConfigManager.load(player.getUniqueId()+";char;"+characterID+".yml");
 		this.config = ConfigManager.get(player.getUniqueId()+";char;"+characterID+".yml");
 	}
-
 	
 	public Player getPlayer(){
 		return this.player;
+	}
+	
+	public Inventory getSavedInventory(){
+		List<Map<?, ?>> inventories = config.getMapList("inventory");
+		@SuppressWarnings("unchecked")
+		HashMap<Integer, ItemStack> hashInventory = (HashMap<Integer, ItemStack>) inventories.get(0);
+		Inventory inv = Bukkit.createInventory(null, InventoryType.PLAYER);
+		for(Integer i : hashInventory.keySet()){
+			ItemStack item = hashInventory.get(i);
+			inv.setItem(i, item);
+		}
+		return inv;
+	}
+	
+	public void applyInventory(){
+		this.getPlayer().getInventory().clear();
+		List<Map<?, ?>> list = config.getMapList("inventory");
+		@SuppressWarnings("unchecked")
+		Map<Integer, ItemStack> hashInventory = (Map<Integer, ItemStack>)list.get(0);
+		for(Integer i : hashInventory.keySet()){
+			ItemStack item = hashInventory.get(i);
+			this.getPlayer().getInventory().setItem(i, item);
+		}
+	}
+	
+	public void setSavedInventory(Inventory inventory){
+		//Inventory oldsavedInventory = getSavedInventory();
+		List<Map<?, ?>> inventories = new ArrayList<Map<?, ?>>();
+		HashMap<Integer, ItemStack> hashInventory = new HashMap<Integer, ItemStack>();
+		for(int i = 0; i < inventory.getSize(); i++){
+			ItemStack item = inventory.getItem(i);
+			if(item != null)
+				hashInventory.put(i, item);
+			
+		}
+		inventories.add(hashInventory);
+		config.set("inventory", inventories);
+		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
+	}
+	
+	public Inventory getInventory(){
+		return this.getPlayer().getInventory();
 	}
 	
 	public Location getLastLocation(){
@@ -327,6 +374,7 @@ public class Character {
 		config.set("profession.alchemy.exp", 0);
 		config.set("profession.forging.level", 1);
 		config.set("profession.forging.exp", 0);
+		config.set("inventory", null);
 		config.set("stats.strength", 0);
 		config.set("stats.hitpoints", 0);
 		config.set("stats.agility", 0);

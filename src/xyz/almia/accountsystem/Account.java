@@ -23,7 +23,10 @@ public class Account {
 	}
 	
 	public void logout(){
+		getLoadedCharacter().setSavedInventory(player.getInventory());
+		getLoadedCharacter().setLastLocation(player.getLocation());
 		getLoadedCharacter().setRegening(false);
+		player.getInventory().clear();
 		config.set("status", AccountStatus.LOGGINGIN.toString());
 		config.set("lastLoaded", getLoadedCharacterID());
 		config.set("loaded", -1);

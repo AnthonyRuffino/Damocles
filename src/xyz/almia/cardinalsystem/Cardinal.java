@@ -18,7 +18,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import mkremins.fanciful.FancyMessage;
 import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
@@ -48,6 +47,7 @@ import xyz.almia.itemsystem.ItemSerializer;
 import xyz.almia.itemsystem.Items;
 import xyz.almia.itemsystem.Potion;
 import xyz.almia.itemsystem.PotionTypes;
+import xyz.almia.itemsystem.Soul;
 import xyz.almia.menu.ClanMenu;
 import xyz.almia.menu.PlayerMenu;
 import xyz.almia.menu.SelectionMenu;
@@ -272,6 +272,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		Bukkit.getPluginManager().registerEvents(new DarkMagic(), this);
 		Bukkit.getPluginManager().registerEvents(new SelectionMenu(), this);
 		Bukkit.getPluginManager().registerEvents(new AnvilHandler(), this);
+		Bukkit.getPluginManager().registerEvents(new Soul(), this);
 	}
 	
 	public void registerEnchants(){
@@ -333,14 +334,22 @@ public class Cardinal extends JavaPlugin implements Listener{
 			Message.sendCenteredMessage(player, ChatColor.YELLOW+"Logging out in 5 seconds do not move.");
 			Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 			Location loc = player.getLocation();
+			int oldx = loc.getBlockX();
+			int oldy = loc.getBlockY();
+			int oldz = loc.getBlockZ();
 			for(int o = 0; o < 15; o++){
 				player.sendMessage("");
 			}
 			new BukkitRunnable(){
 				int i = 5;
+				
 				public void run() {
 					
-					if(!(loc.equals(player.getLocation()))){
+					int newx = player.getLocation().getBlockX();
+					int newy = player.getLocation().getBlockY();
+					int newz = player.getLocation().getBlockZ();
+					
+					if( (oldx != newx) || (oldy != newy) || (oldz != newz) ){
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Account");
 						Message.sendCenteredMessage(player, ChatColor.YELLOW+"Moved cancelling logout.");
@@ -353,7 +362,6 @@ public class Cardinal extends JavaPlugin implements Listener{
 						i--;
 					}else{
 						Message.sendCenteredMessage(player, ChatColor.RED + "" + i +"...");
-						account.getLoadedCharacter().setLastLocation(player.getLocation());
 						account.logout();
 						for(int o = 0; o < 15; o++){
 							player.sendMessage("");
@@ -400,13 +408,29 @@ public class Cardinal extends JavaPlugin implements Listener{
 			nmsStack.setTag(compound);
 			player.getInventory().addItem(CraftItemStack.asBukkitCopy(nmsStack));
 			
-			ItemStack arrow = new ItemStack(Material.TIPPED_ARROW);
+			ItemStack arrow = new ItemStack(Material.TIPPED_ARROW, 64);
 			net.minecraft.server.v1_11_R1.ItemStack nmsStackArrow = CraftItemStack.asNMSCopy(arrow);
 	        NBTTagCompound arrowcompound = (nmsStackArrow.hasTag()) ? nmsStackArrow.getTag() : new NBTTagCompound();
 	        arrowcompound.set("CustomPotionColor", new NBTTagInt(16446520));
 			nmsStackArrow.setTag(arrowcompound);
 			player.getInventory().addItem(CraftItemStack.asBukkitCopy(nmsStackArrow));
-		
+			
+			/*ItemStack spawner = new ItemStack(Material.MOB_SPAWNER, 1);
+			net.minecraft.server.v1_11_R1.ItemStack nmsSpawner = CraftItemStack.asNMSCopy(spawner);
+			NBTTagCompound spawnercompound = (nmsSpawner.hasTag()) ? nmsSpawner.getTag() : new NBTTagCompound();
+			NBTTagCompound BlockEntityTag = new NBTTagCompound();
+			NBTTagList SpawnPotentials = new NBTTagList();
+			NBTTagCompound zombie = new NBTTagCompound();
+			zombie.set("Type", new NBTTagString("zombie"));
+			zombie.set("Weight", new NBTTagInt(1));
+			SpawnPotentials.add(zombie);
+			BlockEntityTag.set("SpawnPotentials", SpawnPotentials);
+			spawnercompound.set("BlockEntityTag", BlockEntityTag);
+			nmsSpawner.setTag(spawnercompound);
+			player.getInventory().addItem(CraftItemStack.asBukkitCopy(nmsSpawner));*/
+			
+			 
+			
 			return true;
 		}
 		
@@ -505,17 +529,25 @@ public class Cardinal extends JavaPlugin implements Listener{
 				if(args.length == 3){
 					try{
 						xyz.almia.accountsystem.Character chara = playersetup.getCharacterFromUsername(args[1]);
-						xyz.almia.accountsystem.Rank rank = xyz.almia.accountsystem.Rank.valueOf(args[2].toUpperCase());
-						chara.setRank(rank);
-						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-						Message.sendCenteredMessage(player, ChatColor.BOLD + "Rank");
-						Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have set "+args[1]+" to a "+args[2]+"!");
-						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-						return true;
+						try{
+							xyz.almia.accountsystem.Rank rank = xyz.almia.accountsystem.Rank.valueOf(args[2].toUpperCase());
+							chara.setRank(rank);
+							Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+							Message.sendCenteredMessage(player, ChatColor.BOLD + "Rank");
+							Message.sendCenteredMessage(player, ChatColor.YELLOW+"You have set "+args[1]+" to a "+args[2]+"!");
+							Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+							return true;
+						}catch(Exception e){
+							Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+							Message.sendCenteredMessage(player, ChatColor.BOLD + "Rank Help");
+							Message.sendCenteredMessage(player, ChatColor.YELLOW+"Invalid Arguments : Unknown Rank");
+							Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+							return true;
+						}
 					}catch(Exception e){
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 						Message.sendCenteredMessage(player, ChatColor.BOLD + "Rank Help");
-						Message.sendCenteredMessage(player, ChatColor.YELLOW+"Invalid Arguments : Unknown Player or Rank");
+						Message.sendCenteredMessage(player, ChatColor.YELLOW+"Invalid Arguments : Unknown Player");
 						Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 						return true;
 					}
