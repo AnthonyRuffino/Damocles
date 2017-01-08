@@ -21,8 +21,6 @@ commands:
     description: player stats.
   help:
     description: command help.
-  serialize:
-    description: command help.
   logout:
     description: Logs the user out of the character he is currently using.
   rune:

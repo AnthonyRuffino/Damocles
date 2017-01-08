@@ -40,8 +40,8 @@ import xyz.almia.enchantsystem.BlankEnchant;
 import xyz.almia.enchantsystem.Enchant;
 import xyz.almia.enchantsystem.Enchantments;
 import xyz.almia.enchantsystem.Rune;
+import xyz.almia.itemsystem.CardinalDrops;
 import xyz.almia.itemsystem.ItemHandler;
-import xyz.almia.itemsystem.ItemSerializer;
 import xyz.almia.itemsystem.Items;
 import xyz.almia.itemsystem.Soul;
 import xyz.almia.menu.ClanMenu;
@@ -209,26 +209,6 @@ public class Cardinal extends JavaPlugin implements Listener{
 		getConfig().addDefault("Kings.gold.proposed", "unknown");
 		getConfig().addDefault("Kings.green.proposed", "unknown");
 		getConfig().addDefault("Kings.colorless.proposed", "unknown");
-		
-		getConfig().addDefault("enchant.aegis", 5);
-		getConfig().addDefault("enchant.assassin", 3);
-		getConfig().addDefault("enchant.bat_vision", 1);
-		getConfig().addDefault("enchant.bloodthirsty", 1);
-		getConfig().addDefault("enchant.demon_siphon", 4);
-		getConfig().addDefault("enchant.eyepatch", 1);
-		getConfig().addDefault("enchant.flame", 2);
-		getConfig().addDefault("enchant.holy_smite", 5);
-		getConfig().addDefault("enchant.jump", 3);
-		getConfig().addDefault("enchant.lifesteal", 3);
-		getConfig().addDefault("enchant.petrify", 5);
-		getConfig().addDefault("enchant.protection", 4);
-		getConfig().addDefault("enchant.sharpened", 5);
-		getConfig().addDefault("enchant.snare", 4);
-		getConfig().addDefault("enchant.soulshot", 1);
-		getConfig().addDefault("enchant.speed", 3);
-		getConfig().addDefault("enchant.swipe", 5);
-		getConfig().addDefault("enchant.volley", 1);
-		getConfig().addDefault("enchant.wild_mark", 5);
 		
 		getConfig().addDefault("players", new ArrayList<String>());
 		
@@ -460,16 +440,6 @@ public class Cardinal extends JavaPlugin implements Listener{
 			}
 		}
 		
-		if(cmd.getName().equalsIgnoreCase("serialize")){
-			if(args.length == 1){
-				if(args[0].equals(Items.EXCALIBUR.toString().toLowerCase())){
-					ItemSerializer.serializeItem(Items.EXCALIBUR, player.getInventory().getItemInMainHand());
-					player.sendMessage("serialized!");
-					return true;
-				}
-			}
-		}
-		
 		if(cmd.getName().equalsIgnoreCase("add")){
 			ItemStack item = new ItemStack(Material.POTION);
 			net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
@@ -553,9 +523,10 @@ public class Cardinal extends JavaPlugin implements Listener{
 
 			
 			Inventory inv = Bukkit.createInventory(null, 18, "items");
+			CardinalDrops drop = new CardinalDrops();
 			
 			for(Items item : Items.values()){
-				inv.addItem(ItemSerializer.deserializeItem(item));
+				inv.addItem(drop.getItem(item));
 			}
 			inv.addItem(new Potion(new ItemStack(Material.POTION)).create(PotionTypes.HEALING, 1));
 			inv.addItem(new Potion(new ItemStack(Material.POTION)).create(PotionTypes.MANA, 1));
