@@ -376,6 +376,46 @@ public class Character {
 		}
 	}
 	
+	public void remove(){
+		new Account(player).logout();
+		config.set("username", "UNKNOWN");
+		config.set("rank", "PLAYER");
+		config.set("physicaldamage", 1);
+		config.set("magicaldamage", 1);
+		config.set("mana", 0);
+		config.set("maxmana", 20);
+		config.set("speed", .2);
+		config.set("level", 1);
+		config.set("exp", 0);
+		config.set("skillslots", 2);
+		config.set("ap", 4);
+		config.set("health", 6);
+		config.set("maxhealth", 6);
+		config.set("money", 0);
+		config.set("soul", 5);
+		config.set("regening", false);
+		config.set("profession.herbalism.level", 1);
+		config.set("profession.herbalism.exp", 0);
+		config.set("profession.cooking.level", 1);
+		config.set("profession.cooking.exp", 0);
+		config.set("profession.mining.level", 1);
+		config.set("profession.mining.exp", 0);
+		config.set("profession.fishing.level", 1);
+		config.set("profession.fishing.exp", 0);
+		config.set("profession.alchemy.level", 1);
+		config.set("profession.alchemy.exp", 0);
+		config.set("profession.forging.level", 1);
+		config.set("profession.forging.exp", 0);
+		config.set("inventory", null);
+		config.set("stats.strength", 0);
+		config.set("stats.hitpoints", 0);
+		config.set("stats.agility", 0);
+		config.set("stats.intelligence", 0);
+		config.set("location", LocationSerializer.locationToString(player.getLocation()));
+		config.set("status", CharacterStatus.CHOOSE_USERNAME.toString());
+		ConfigManager.save(player.getUniqueId()+";char;"+characterID+".yml");
+	}
+	
 	public void create(){
 		config.set("username", "UNKNOWN");
 		config.set("rank", "PLAYER");

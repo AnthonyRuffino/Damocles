@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,16 +14,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-
 import mkremins.fanciful.FancyMessage;
-import net.minecraft.server.v1_11_R1.NBTTagCompound;
-import net.minecraft.server.v1_11_R1.NBTTagInt;
-import net.minecraft.server.v1_11_R1.NBTTagList;
-import net.minecraft.server.v1_11_R1.NBTTagString;
 import xyz.almia.accountsystem.Account;
 import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.enchantsystem.EnchantTypes;
@@ -129,36 +121,7 @@ public class ItemHandler implements Listener{
 			return EnchantTypes.NONE;
 		}
 	}
-	
-	public ItemStack buildItem(Material material,String name, List<String> lore, int amount, int durability){
-		ItemStack x = new ItemStack(material, amount);
-        net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(x);
-        NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-        NBTTagList modifiers = new NBTTagList();
-        NBTTagCompound toughness = new NBTTagCompound();
-        toughness.set("AttributeName", new NBTTagString("armorToughness"));
-        toughness.set("Name", new NBTTagString("armorToughness"));
-        toughness.set("Amount", new NBTTagInt(0));
-        toughness.set("Operation", new NBTTagInt(0));
-        toughness.set("UUIDLeast", new NBTTagInt(894654));
-        toughness.set("UUIDMost", new NBTTagInt(2872));
-        modifiers.add(toughness);
-        NBTTagCompound armor = new NBTTagCompound();
-        armor.set("AttributeName", new NBTTagString("generic.armor"));
-        armor.set("Name", new NBTTagString("generic.armor"));
-        armor.set("Amount", new NBTTagInt(0));
-        armor.set("Operation", new NBTTagInt(0));
-        armor.set("UUIDLeast", new NBTTagInt(894654));
-        armor.set("UUIDMost", new NBTTagInt(2872));
-        modifiers.add(armor);
-        compound.set("AttributeModifiers", modifiers);
-        nmsStack.setTag(compound);
-        x = CraftItemStack.asBukkitCopy(nmsStack);
-		ItemMeta im = x.getItemMeta();
-		im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-		x.setItemMeta(im);
-		return x;
-	}
+
 	
 	@EventHandler
 	public void onEnderPearl(PlayerInteractEvent event){
@@ -187,6 +150,7 @@ public class ItemHandler implements Listener{
 					
 					if(event.getCursor().getType().equals(Material.EMPTY_MAP)){
 						
+						
 						if(ItemHandler.getType(event.getCurrentItem()).equals(ItemTypes.ARMOR)){
 							Armor detailItem = new Armor(event.getCurrentItem());
 							if(!(detailItem.isProtected())){
@@ -222,9 +186,6 @@ public class ItemHandler implements Listener{
 								return;
 							}
 						}else{
-				    		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-				    		Message.sendCenteredMessage(player, ChatColor.YELLOW+"An error has occured.");
-				    		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 							return;
 						}
 						
@@ -232,6 +193,10 @@ public class ItemHandler implements Listener{
 					
 					if(event.getCursor().getType().equals(Material.EYE_OF_ENDER)){
 						
+						if(event.getCurrentItem() == null){
+							return;
+						}
+						
 						if(ItemHandler.getType(event.getCurrentItem()).equals(ItemTypes.ARMOR)){
 							Armor detailItem = new Armor(event.getCurrentItem());
 							if(event.getCursor().hasItemMeta()){
@@ -275,9 +240,6 @@ public class ItemHandler implements Listener{
 					    		  player.getWorld().spawnParticle(Particle.CRIT_MAGIC, player.getLocation(), 50);
 							}
 						}else{
-				    		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-				    		Message.sendCenteredMessage(player, ChatColor.YELLOW+"An error has occured.");
-				    		Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
 							return;
 						}
 					}
@@ -441,6 +403,8 @@ public class ItemHandler implements Listener{
 					}
 				}
 			}
+		}else{
+			return;
 		}
 	}
 	

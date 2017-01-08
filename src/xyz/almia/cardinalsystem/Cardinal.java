@@ -552,7 +552,7 @@ public class Cardinal extends JavaPlugin implements Listener{
 		if(cmd.getName().equalsIgnoreCase("cardinal")){
 
 			
-			Inventory inv = Bukkit.createInventory(null, 9, "items");
+			Inventory inv = Bukkit.createInventory(null, 18, "items");
 			
 			for(Items item : Items.values()){
 				inv.addItem(ItemSerializer.deserializeItem(item));
@@ -1081,24 +1081,32 @@ public class Cardinal extends JavaPlugin implements Listener{
 			}
 			
 			
-			try{
-				Enchantments enchant = Enchantments.valueOf(args[0].toUpperCase());
-				int level = Integer.valueOf(args[1]);
-				int success = Integer.valueOf(args[2]);
-				int destroy = Integer.valueOf(args[3]);
-				if(level > enchantclass.getMaxLevel(enchant)){
-					player.sendMessage(ChatColor.YELLOW + "Error: The max level for " + enchantclass.getName(enchant) + " is " + enchantclass.getMaxLevel(enchant));
-					return true;
+			for(Enchantments enchant : Enchantments.values()){
+				if(args[0].equalsIgnoreCase(enchant.toString())){
+					try{
+						int level = Integer.valueOf(args[1]);
+						int success = Integer.valueOf(args[2]);
+						int destroy = Integer.valueOf(args[3]);
+						if(level > enchantclass.getMaxLevel(enchant))
+						if(level > enchantclass.getMaxLevel(enchant)){
+							player.sendMessage(ChatColor.YELLOW + "Error: The max level for " + enchantclass.getName(enchant) + " is " + enchantclass.getMaxLevel(enchant));
+							return true;
+						}
+						player.getInventory().addItem(rune.createRune(enchant, level, success, destroy));
+						return true;
+					}catch(NumberFormatException e) {
+				  		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				  		  Message.sendCenteredMessage(player, ChatColor.YELLOW+args[1]+ ", "+args[2]+", "+args[3]+" One or allof these are not whole numbers!");
+				  		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+				  		  return true;
+					}
 				}
-				player.getInventory().addItem(rune.createRune(enchant, level, success, destroy));
-				return true;
-			}catch(Exception e){
-	    		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-	    		  Message.sendCenteredMessage(player, ChatColor.YELLOW+args[0]+" is not a rune, or "+args[1]+", "+args[2]+", or "+args[3]+" are not whole numbers!");
-	    		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
-	    		  return true;
 			}
 			
+  		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+  		  Message.sendCenteredMessage(player, ChatColor.YELLOW+args[0]+" is not a rune, or a valid sub-command of /rune");
+  		  Message.sendCenteredMessage(player, ChatColor.GREEN+"----------------------------------------------------");
+  		  return true;
 
 		}
 				

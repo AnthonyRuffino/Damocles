@@ -12,7 +12,47 @@ public class Enchantment {
 	public Enchantment(){}
 	
 	public int getMaxLevel(Enchantments enchant){
-		return plugin.getConfig().getInt("enchant."+enchant.toString().toLowerCase());
+		switch(enchant){
+		case AEGIS:
+			return 5;
+		case ASSASSIN:
+			return 3;
+		case BAT_VISION:
+			return 1;
+		case BLOODTHIRST:
+			return 1;
+		case DEMON_SIPHON:
+			return 4;
+		case EYEPATCH:
+			return 1;
+		case FLAME:
+			return 2;
+		case HOLY_SMITE:
+			return 5;
+		case JUMP:
+			return 3;
+		case LIFESTEAL:
+			return 3;
+		case PETRIFY:
+			return 5;
+		case PROTECTION:
+			return 4;
+		case SHARPENED:
+			return 5;
+		case SNARE:
+			return 4;
+		case SOULSHOT:
+			return 1;
+		case SPEED:
+			return 3;
+		case SWIPE:
+			return 5;
+		case VOLLEY:
+			return 1;
+		case WILD_MARK:
+			return 5;
+		}
+		return 0;
 	}
 	
 	public int getValue(Enchantments enchant){

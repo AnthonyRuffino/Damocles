@@ -23,6 +23,7 @@ import xyz.almia.cardinalsystem.Cardinal;
 import xyz.almia.itemsystem.Armor;
 import xyz.almia.itemsystem.ItemHandler;
 import xyz.almia.itemsystem.ItemTypes;
+import xyz.almia.itemsystem.Soul;
 import xyz.almia.itemsystem.Weapon;
 import xyz.almia.menu.AccountMenu;
 import xyz.almia.selectionsystem.Selection;
@@ -215,6 +216,15 @@ public class Tasks{
 					if(account.getStatus().equals(AccountStatus.LOGGEDIN)){
 						
 						Character character = account.getLoadedCharacter();
+						
+						character.getPlayer().getInventory().setItem(8, Soul.soulApple(character));
+						
+						if(character.getSouls() < 0)
+							character.setSouls(0);
+						
+						if(character.getSouls() == 0){
+							character.remove();
+						}
 						
 						if(!(character.getRegening())){
 							startCharacterRegen(player);
