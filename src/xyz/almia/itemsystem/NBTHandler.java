@@ -3,6 +3,7 @@ package xyz.almia.itemsystem;
 import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import net.minecraft.server.v1_11_R1.NBTBase;
+import net.minecraft.server.v1_11_R1.NBTTagByte;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
 import net.minecraft.server.v1_11_R1.NBTTagInt;
 import net.minecraft.server.v1_11_R1.NBTTagString;
@@ -15,6 +16,17 @@ public class NBTHandler {
 	public NBTHandler(ItemStack item){
 		this.item = item;
 		nmsStack = CraftItemStack.asNMSCopy(item);
+	}
+	
+	public ItemStack setUnbreakable(boolean value){
+        NBTTagCompound compound = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
+        if(value){
+        	compound.set("Unbreakable", new NBTTagByte((byte) 1));
+        }else{
+        	compound.set("Unbreakable", new NBTTagByte((byte) 0));
+        }
+		nmsStack.setTag(compound);
+		return CraftItemStack.asBukkitCopy(nmsStack);
 	}
 	
 	public NBTBase getTag(String tag){

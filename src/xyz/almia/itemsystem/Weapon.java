@@ -76,6 +76,16 @@ public class Weapon{
 	}
 	
 	@SuppressWarnings("deprecation")
+	public void setID(int id){
+		ItemMeta im = this.item.getItemMeta();
+		item.setDurability((short)id);
+		im.spigot().setUnbreakable(true);
+		im.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+		im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		item.setItemMeta(im);
+	}
+	
+	@SuppressWarnings("deprecation")
 	public String getName(){
 		if(item.getItemMeta().hasDisplayName())
 			return item.getItemMeta().getDisplayName();
